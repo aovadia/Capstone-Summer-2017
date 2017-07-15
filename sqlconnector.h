@@ -8,12 +8,20 @@
 class sqlConnector
 {
 public:
-    sqlConnector();
+    sqlConnector(int);
     ~sqlConnector();
+
+    bool setNewBikeID(int);
+    bool setBikeHealth(int);
+    bool setBikeService(bool);
+    bool setBikeCheckout(time_t);
+    bool setBikeCheckin(time_t);
+    bool setBikeRentalTime(int);
 
 private:
     QSqlDatabase db;
     QSqlQuery query;
+    int bikeID;
 };
 
 #endif // SQLCONNECTOR_H

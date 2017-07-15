@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QtSql/QSqlError>
 
-sqlConnector::sqlConnector()
+sqlConnector::sqlConnector(int id)
 {
        db = QSqlDatabase::addDatabase("QMYSQL");
        db.setHostName("capstone-bikes.cphpxguj45gw.us-east-1.rds.amazonaws.com");
@@ -16,9 +16,10 @@ sqlConnector::sqlConnector()
        }
        //QSqlQuery query("INSERT INTO Master (BikeId, CheckedOut, Service, Distance, Health) VALUES (2, 0, 0, 0, 10);",db);
         query = new QSqlQuery(db);
+        //query.exec("INSERT INTO Master (BikeId, CheckedOut, Service, Distance, Health) VALUES (2, 0, 0, 0, 10);");
+        bikeID = id;
 }
 
 sqlConnector::~sqlConnector() {
     db.close();
-    query.finish();
 }
