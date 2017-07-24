@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QtSql/QSqlQuery>
 #include "bikehealth.h"
 
 class bikeServiced : public QWidget
@@ -12,6 +13,7 @@ class bikeServiced : public QWidget
 public:
     explicit bikeServiced(bikeHealth *);
     void setData(bool);
+    void accessSql(QSqlQuery, int);
 
 private slots:
     void toggleInService();
@@ -19,9 +21,9 @@ private slots:
 private:
     QLabel *serviced;
     int bikeID;
+    QSqlQuery query;
     bool inService;
     QVBoxLayout *myQVBox;
-    void checkInService();
     bikeHealth *myBikeHealth;
 
 };

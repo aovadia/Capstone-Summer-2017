@@ -12,7 +12,7 @@ class bikeHealth : public QWidget
 {
     Q_OBJECT
 public:
-    explicit bikeHealth();
+    explicit bikeHealth(int id);
     void setData(int);
     void sendQuery(QSqlQuery);
 
@@ -21,6 +21,7 @@ private slots:
     void changeHealth();
 
 private:
+    int BikeId;
     QVBoxLayout *myQVBox;
     QSlider *healthSlider;
     QProgressBar *healthBar;

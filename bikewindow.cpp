@@ -126,7 +126,7 @@ void bikeWindow::displayBikeInfo(int bid) {
     timeOfLastUpdate->setAlignment(Qt::AlignTop);
     myQVBox->addWidget(timeOfLastUpdate);
 
-    bikeHealth *myBikeHealth = new bikeHealth();
+    bikeHealth *myBikeHealth = new bikeHealth(bikeID);
     myBikeHealth->sendQuery(query);
     myBikeHealth->setData(Health);
     QVBHealth->addWidget(myBikeHealth);
@@ -151,6 +151,7 @@ void bikeWindow::displayBikeInfo(int bid) {
 
 
     bikeServiced *myBikeSeviced = new bikeServiced(myBikeHealth);
+    myBikeSeviced->accessSql(query, bikeID);
     myBikeSeviced->setData(Service);
     myQVBox->addWidget(myBikeSeviced);
 

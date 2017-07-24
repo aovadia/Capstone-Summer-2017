@@ -1,7 +1,9 @@
 #include "bikehealth.h"
+#include <QMessageBox>
 
-bikeHealth::bikeHealth()
+bikeHealth::bikeHealth(int id)
 {
+    BikeId = id;
     myQVBox = new QVBoxLayout();
     QLabel *lblHealth = new QLabel("Bike Health");
     lblHealth->setFont(QFont("Times", 16, QFont::Bold));
@@ -31,6 +33,11 @@ void bikeHealth::changeHealth() {
     val = val + (10/2);
     val -= val % 10;
     healthBar->setValue(val);
+    QString statement = "UPDATE Master SET Health = ";
+    statement.append(QString(val));
+    statement.append("WHERE BikeId = ");
+    statement.append(QString::fromStdString(std::to_string(BikeId)));
+    if (!query.exec(statement))  QMessageBox::warning(this, "Connection error", "try again in a few seconds");
 }
 
 void bikeHealth::setData(int val) {
@@ -39,6 +46,11 @@ void bikeHealth::setData(int val) {
     healthBar->setValue(val*10);
     healthSlider->setValue(val*10);
     //update server
+    QString statement = "UPDATE Master SET Health = ";
+    statement.append(QString(val));
+    statement.append("WHERE BikeId = ");
+    statement.append(QString::fromStdString(std::to_string(BikeId)));
+    if (!query.exec(statement))  QMessageBox::warning(this, "Connection error", "try again in a few seconds");
 }
 
 void bikeHealth::sendQuery(QSqlQuery a) {
