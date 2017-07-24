@@ -36,8 +36,8 @@ void bikeHealth::changeHealth() {
 void bikeHealth::setData(int val) {
     val = val + (10/2);
     val -= val % 10;
-    healthBar->setValue(val);
-    healthSlider->setValue(val);
+    healthBar->setValue(val*10);
+    healthSlider->setValue(val*10);
     //update server
 }
 

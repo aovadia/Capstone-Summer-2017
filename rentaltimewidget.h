@@ -7,13 +7,13 @@
 #include <QString>
 #include <QComboBox>
 #include <QDialog>
-
+#include <QtSql/QSqlQuery>
 class rentalTimeWidget : public QWidget
 {
     Q_OBJECT
 public:
    explicit rentalTimeWidget();
-    void setData(double);
+    void setData(int);
 
 private slots:
     void setRentalTime();

@@ -49,7 +49,8 @@ void rentalTimeWidget::saveRentalTime() {
     mDialog->close();
 }
 
-void rentalTimeWidget::setData(double val) {
-    QString rentalTime(QDateTime::fromTime_t(val*60).toUTC().toString("hh:mm"));
+void rentalTimeWidget::setData(int val) {
+    QString rentalTime(QDateTime::fromTime_t(val).toUTC().toString("hh:mm"));
     rentalTimeUpdateLbl->setText(rentalTime);
 }
+

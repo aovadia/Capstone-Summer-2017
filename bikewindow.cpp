@@ -61,9 +61,9 @@ void bikeWindow::checkBikeID() {
 
 void bikeWindow::displayBikeInfo(int bid) {
     bool CheckedOut, Service;
-    double Distance, rentalTime, timeElapsed;
-    int Health;
-    std::vector<std::string> timeline;
+    double Distance;
+    int Health, rentalTime;
+    QVector<std::string> timeline;
     std::string statement = "SELECT * FROM Master WHERE BikeId = ";
     std::string val = std::to_string(bid);
     statement.append(val);
@@ -89,8 +89,7 @@ void bikeWindow::displayBikeInfo(int bid) {
             if (!firstTimeDone) {
                 latestRentalId = query.value(0).toInt();
                 firstTimeDone = true;
-                rentalTime = query.value(4).toDouble();
-                timeElapsed = query.value(5).toDouble();
+                rentalTime = query.value(4).toInt();
             }
             if (query.value(3).toString() != NULL) {
                 timeline.push_back(query.value(3).toString().toStdString().append("I")); //apend I
@@ -101,9 +100,12 @@ void bikeWindow::displayBikeInfo(int bid) {
     else QMessageBox::warning(this, "Connection error", "try again in a few seconds");
     qDebug() <<"checkout: " <<CheckedOut <<"service: " <<Service <<"Distance: " <<Distance <<"Health: " <<Health;
 
-    qDebug() <<"rental id: " <<latestRentalId << "rental time: " <<rentalTime << "Time elapsed: " <<timeElapsed;
+    qDebug() <<"rental id: " <<latestRentalId << "rental time: " <<rentalTime;
 
     for (int a = 0; a < timeline.size(); a++) {
+        for (int b = 0; b < timeline[a].size(); b++) {
+            if (timeline[a][b] == 'T') timeline[a][b] = ' ';
+        }
         qDebug() <<"timeline: " <<QString::fromUtf8(timeline[a].c_str());
     }
     this->resize(1500,1000);
@@ -117,39 +119,43 @@ void bikeWindow::displayBikeInfo(int bid) {
     id->setStyleSheet("border:5px solid #000000");
     myQVBox->addWidget(id);
 
-    QLabel *timeOfLastUpdate = new QLabel("Last Update: "+ setTimeOfUpdate());
-    timeOfLastUpdate->setAlignment(Qt::AlignTop);
-    myQVBox->addWidget(timeOfLastUpdate);
-
-    checkInHistory *myCheckInHistory = new checkInHistory(bikeID);
-    myCheckInHistory->setData(timeline);
-    myCheckInHistory->sendQuery(query);
-    myQVBox->addWidget(myCheckInHistory);
-
-   // myQVBox->addSpacerItem(vertSpace);
-
     QVBoxLayout *QVBHealth = new QVBoxLayout();
     myQHBox->addLayout(QVBHealth);
 
-    checkOutWidget *myCheckOut = new checkOutWidget(myCheckInHistory);
-    myCheckOut->setData(CheckedOut);
-    myQVBox->addWidget(myCheckOut);
+    QLabel *timeOfLastUpdate = new QLabel("Last Update: "+ setTimeOfUpdate());
+    timeOfLastUpdate->setAlignment(Qt::AlignTop);
+    myQVBox->addWidget(timeOfLastUpdate);
 
     bikeHealth *myBikeHealth = new bikeHealth();
     myBikeHealth->sendQuery(query);
     myBikeHealth->setData(Health);
     QVBHealth->addWidget(myBikeHealth);
 
-    bikeServiced *myBikeSeviced = new bikeServiced(myBikeHealth);
-    myBikeSeviced->setData(Service);
-    myQVBox->addWidget(myBikeSeviced);
-
     rentalTimeWidget *myRentalTime = new rentalTimeWidget();
     myRentalTime->setData(rentalTime);
     QVBHealth->addWidget(myRentalTime);
 
+    checkInHistory *myCheckInHistory = new checkInHistory(bikeID, myRentalTime);
+    myCheckInHistory->setData(timeline);
+    myCheckInHistory->sendQuery(query);
+    myQVBox->addWidget(myCheckInHistory);
+
+   // myQVBox->addSpacerItem(vertSpace);
+
+
+
+    checkOutWidget *myCheckOut = new checkOutWidget(myCheckInHistory);
+    myCheckOut->setData(CheckedOut);
+    myQVBox->addWidget(myCheckOut);
+
+
+
+    bikeServiced *myBikeSeviced = new bikeServiced(myBikeHealth);
+    myBikeSeviced->setData(Service);
+    myQVBox->addWidget(myBikeSeviced);
+
     myTimer *myTimerLayout = new myTimer();
-    myTimerLayout->setData(timeElapsed);
+    myTimerLayout->setData(0);
     QVBHealth->addWidget(myTimerLayout);
 
 }
