@@ -73,7 +73,7 @@ void accountManage::addNewBike() {
             removeActiveWindows();
             myBikeWindow2 = new bikeWindow();
             myBikeWindow2->displayBikeInfo(total);
-            myBikeWindow2->queryAccess(*query);
+            myBikeWindow2->queryAccess(query);
             myQHBox4->addWidget(myBikeWindow2);
             myQHBox4->addLayout(myQVBox);
             isAddBikeActive = true;
@@ -99,7 +99,7 @@ void accountManage::searchForBike() {
     removeActiveWindows();
     isBikeWindowActive = true;
     myBikeWindow = new bikeWindow();
-    myBikeWindow->queryAccess(*query);
+    myBikeWindow->queryAccess(query);
     myQHBox4->addWidget(myBikeWindow);
     myQHBox4->addLayout(myQVBox);
 

@@ -34,7 +34,7 @@ void bikeHealth::changeHealth() {
     statement.append(QString::fromStdString(std::to_string(val)));
     statement.append(" WHERE BikeId = ");
     statement.append(QString::fromStdString(std::to_string(BikeId)));
-    if (!query.exec(statement))  {
+    if (!query->exec(statement))  {
         QMessageBox::warning(this, "Connection error", "try again in a few seconds");
         qDebug() <<"Statement: " <<statement;
     }
@@ -48,11 +48,11 @@ void bikeHealth::setData(int val) {
     statement.append(QString::fromStdString(std::to_string(val)));
     statement.append(" WHERE BikeId = ");
     statement.append(QString::fromStdString(std::to_string(BikeId)));
-    if (!query.exec(statement))  {
+    if (!query->exec(statement))  {
         QMessageBox::warning(this, "Connection error", "try again in a few seconds");
         qDebug() <<"Statement: " <<statement;
     }}
 
-void bikeHealth::sendQuery(QSqlQuery a) {
+void bikeHealth::sendQuery(QSqlQuery *a) {
     query = a;
 }

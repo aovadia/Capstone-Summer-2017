@@ -34,7 +34,7 @@ void bikeServiced::toggleInService() {
     statement.append(QString::fromStdString(std::to_string(inService)));
     statement.append("' WHERE BikeId = ");
     statement.append(QString::fromStdString(std::to_string(bikeID)));
-    if (!query.exec(statement))  {
+    if (!query->exec(statement))  {
         QMessageBox::warning(this, "Connection error", "try again in a few seconds");
         qDebug() <<"Statement: " << statement;
     }
@@ -52,13 +52,13 @@ void bikeServiced::setData(bool bServiced) {
     statement.append(QString::fromStdString(std::to_string(inService)));
     statement.append("' WHERE BikeId = ");
     statement.append(QString::fromStdString(std::to_string(bikeID)));
-    if (!query.exec(statement))  {
+    if (!query->exec(statement))  {
         QMessageBox::warning(this, "Connection error", "try again in a few seconds");
         qDebug() <<"Statement: " << statement;
     }
 }
 
-void bikeServiced::accessSql(QSqlQuery a, int id) {
+void bikeServiced::accessSql(QSqlQuery *a, int id) {
     query = a;
     bikeID = id;
 }

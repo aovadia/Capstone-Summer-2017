@@ -13,7 +13,7 @@ class bikeServiced : public QWidget
 public:
     explicit bikeServiced(bikeHealth *);
     void setData(bool);
-    void accessSql(QSqlQuery, int);
+    void accessSql(QSqlQuery *, int);
 
 private slots:
     void toggleInService();
@@ -21,7 +21,7 @@ private slots:
 private:
     QLabel *serviced;
     int bikeID;
-    QSqlQuery query;
+    QSqlQuery *query;
     bool inService;
     QVBoxLayout *myQVBox;
     bikeHealth *myBikeHealth;

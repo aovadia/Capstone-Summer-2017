@@ -14,7 +14,7 @@ class bikeHealth : public QWidget
 public:
     explicit bikeHealth(int id);
     void setData(int);
-    void sendQuery(QSqlQuery);
+    void sendQuery(QSqlQuery *);
 
 
 private slots:
@@ -26,7 +26,7 @@ private:
     QSlider *healthSlider;
     QProgressBar *healthBar;
     void setHealth();
-    QSqlQuery query;
+    QSqlQuery *query;
 
 };
 

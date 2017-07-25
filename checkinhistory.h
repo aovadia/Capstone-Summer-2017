@@ -18,7 +18,7 @@ public:
     void testEnterCheckinData();
     void setData(QVector<std::string>);
     void setToggled(QDateTime, bool, QVector<std::string> *, int);
-    void sendQuery(QSqlQuery);
+    void sendQuery(QSqlQuery *);
 
 private slots:
     void copyCheckInData();
@@ -29,7 +29,7 @@ private:
     int RentalPlan;
     QVBoxLayout *myQVBox;
     QListWidget *myList;
-    QSqlQuery query;
+    QSqlQuery *query;
     void setRentalTime();
     QDialog *mDialog;
     QComboBox *mComboBox;

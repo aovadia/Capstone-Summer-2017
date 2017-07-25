@@ -14,7 +14,7 @@ class bikeWindow : public QWidget
 public:
     explicit bikeWindow(QWidget *parent = 0);
     void setupBikeWindow();
-    void queryAccess(QSqlQuery a);
+    void queryAccess(QSqlQuery *);
     void displayBikeInfo(int);
 
 
@@ -22,7 +22,7 @@ private slots:
     void checkBikeID();
 
 private:
-    QSqlQuery query;
+    QSqlQuery *query;
     QLineEdit *editBikeID;
     QLabel *enterBikeID;
     QPushButton *acceptBikeID;
