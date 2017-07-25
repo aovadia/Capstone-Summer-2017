@@ -1,6 +1,6 @@
 #include "bikehealth.h"
 #include <QMessageBox>
-
+#include <QDebug>
 bikeHealth::bikeHealth(int id)
 {
     BikeId = id;
@@ -10,10 +10,10 @@ bikeHealth::bikeHealth(int id)
     myQVBox->addWidget(lblHealth);
 
     healthSlider = new QSlider(Qt::Horizontal);
-    healthSlider->setMaximum(100);
+    healthSlider->setMaximum(10);
 
     healthBar = new QProgressBar();
-    setHealth();
+    healthBar->setMaximum(10);
     myQVBox->addWidget(healthSlider);
     myQVBox->addWidget(healthBar);
     myQVBox->setAlignment(Qt::AlignTop);
@@ -29,29 +29,29 @@ void bikeHealth::setHealth() {
 
 void bikeHealth::changeHealth() {
     int val = healthSlider->value();
-    // Only allow increments of 10
-    val = val + (10/2);
-    val -= val % 10;
     healthBar->setValue(val);
     QString statement = "UPDATE Master SET Health = ";
-    statement.append(QString(val));
-    statement.append("WHERE BikeId = ");
+    statement.append(QString::fromStdString(std::to_string(val)));
+    statement.append(" WHERE BikeId = ");
     statement.append(QString::fromStdString(std::to_string(BikeId)));
-    if (!query.exec(statement))  QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+    if (!query.exec(statement))  {
+        QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+        qDebug() <<"Statement: " <<statement;
+    }
 }
 
 void bikeHealth::setData(int val) {
-    val = val + (10/2);
-    val -= val % 10;
-    healthBar->setValue(val*10);
-    healthSlider->setValue(val*10);
+    healthBar->setValue(val);
+    healthSlider->setValue(val);
     //update server
     QString statement = "UPDATE Master SET Health = ";
-    statement.append(QString(val));
-    statement.append("WHERE BikeId = ");
+    statement.append(QString::fromStdString(std::to_string(val)));
+    statement.append(" WHERE BikeId = ");
     statement.append(QString::fromStdString(std::to_string(BikeId)));
-    if (!query.exec(statement))  QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-}
+    if (!query.exec(statement))  {
+        QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+        qDebug() <<"Statement: " <<statement;
+    }}
 
 void bikeHealth::sendQuery(QSqlQuery a) {
     query = a;

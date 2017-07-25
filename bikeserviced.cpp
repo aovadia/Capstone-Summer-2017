@@ -1,6 +1,7 @@
 #include "bikeserviced.h"
 #include <QPushButton>
 #include <QMessageBox>
+#include <QDebug>
 
 bikeServiced::bikeServiced(bikeHealth *myBikeHealth)
 {
@@ -23,17 +24,20 @@ void bikeServiced::toggleInService() {
     if (inService) {
         serviced->setText("Bike is active");
         inService = false;
-        myBikeHealth->setData(100);
+        myBikeHealth->setData(10);
     } else {
         serviced->setText("Bike is being serviced");
         inService = true;
     }
     // Reflect change in server
-    QString statement = "UPDATE Master SET Serviced = '";
+    QString statement = "UPDATE Master SET Service = '";
     statement.append(QString::fromStdString(std::to_string(inService)));
     statement.append("' WHERE BikeId = ");
     statement.append(QString::fromStdString(std::to_string(bikeID)));
-    if (!query.exec(statement))  QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+    if (!query.exec(statement))  {
+        QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+        qDebug() <<"Statement: " << statement;
+    }
 
 }
 
@@ -44,12 +48,14 @@ void bikeServiced::setData(bool bServiced) {
     } else {
         serviced->setText("Bike is active");
     }
-    QString statement = "UPDATE Master SET Serviced = '";
+    QString statement = "UPDATE Master SET Service = '";
     statement.append(QString::fromStdString(std::to_string(inService)));
     statement.append("' WHERE BikeId = ");
     statement.append(QString::fromStdString(std::to_string(bikeID)));
-    if (!query.exec(statement))  QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-
+    if (!query.exec(statement))  {
+        QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+        qDebug() <<"Statement: " << statement;
+    }
 }
 
 void bikeServiced::accessSql(QSqlQuery a, int id) {
