@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
     }
      query = new QSqlQuery(db);
      //query->exec("INSERT INTO Master (BikeId, CheckedOut, Service, Distance, Health) VALUES (2, 0, 0, 0, 10);");
+     connect(ui->usernameTxt, &QLineEdit::returnPressed, this, &MainWindow::on_loginButton_released);
+     connect(ui->passwordTxt, &QLineEdit::returnPressed, this, &MainWindow::on_loginButton_released);
 }
 
 MainWindow::~MainWindow()

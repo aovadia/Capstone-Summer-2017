@@ -42,6 +42,7 @@ void bikeWindow::setupBikeWindow() {
 
     //When 'Enter' button is pressed, run 'checkBikeID'
     connect(acceptBikeID, &QPushButton::released, this, &bikeWindow::checkBikeID);
+    connect(editBikeID, &QLineEdit::returnPressed, this, &bikeWindow::checkBikeID);
 
 }
 
@@ -92,7 +93,7 @@ void bikeWindow::displayBikeInfo(int bid) {
                 rentalTime = query->value(4).toInt();
             }
             if (query->value(3).toString() != NULL) {
-                timeline.push_back(query->value(3).toString().toStdString().append("I")); //apend I
+                timeline.push_back(query->value(3).toString().toStdString().append("I")); //append I
             }
             timeline.push_back(query->value(2).toString().toStdString());
         }
@@ -151,12 +152,11 @@ void bikeWindow::displayBikeInfo(int bid) {
 
 
     bikeServiced *myBikeSeviced = new bikeServiced(myBikeHealth);
-    myBikeSeviced->accessSql(query, bikeID);
+    myBikeSeviced->accessSql(query, bid);
     myBikeSeviced->setData(Service);
     myQVBox->addWidget(myBikeSeviced);
 
-    myTimer *myTimerLayout = new myTimer();
-    myTimerLayout->setData(0);
+    myTimer *myTimerLayout = new myTimer(query, bid);
     QVBHealth->addWidget(myTimerLayout);
 
 }
