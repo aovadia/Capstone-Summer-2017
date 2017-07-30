@@ -46,6 +46,7 @@ void checkInHistory::setData(QVector<std::string> data) {
     myList->clear();
     std::string Year, Month, Day, Time, Status;
     for (int a = 0; a < data.size(); a++) {
+        qDebug() <<"SetData string: "<<QString::fromStdString(data[a]);
         Year = data[a].substr(0, 4);
         Month = data[a].substr(5, 2);
         Day = data[a].substr(8, 2);
@@ -70,11 +71,11 @@ void checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, QVector<std::
     int RentalId = query->value(0).toInt();
     QString checkIn = "UPDATE Rentals SET Returned = '";
     QString checkInEnd = " WHERE RentalID = ";
-    QString checkIn2 = "Update Master SET CheckedOut = 0 WHERE BikeId = ";
+    QString checkIn2 = "UPDATE Master SET CheckedOut = 0 WHERE BikeId = ";
     QString checkOut = "INSERT INTO Rentals (BikeId, Rented, Returned, RentalPlan) VALUES (";
     QString checkOutEnd = ")";
-    QString checkOut2 = "Update Master SET CheckedOut = 1 WHERE BikeId = ";
-    QString DateTime = mTime.toString("yyyy-MM-dd HH:MM:ss");
+    QString checkOut2 = "UPDATE Master SET CheckedOut = 1 WHERE BikeId = ";
+    QString DateTime = mTime.toString("yyyy-MM-dd hh:mm:ss");
     if (!mCheckedOut) {
         checkIn.append(DateTime);
         checkIn.append("'");
@@ -84,6 +85,7 @@ void checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, QVector<std::
         if (!query->exec(checkIn)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
         checkIn2.append(QString::fromStdString( std::to_string(BikeId)));
         if(!query->exec(checkIn2)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+
     }
     else {
 

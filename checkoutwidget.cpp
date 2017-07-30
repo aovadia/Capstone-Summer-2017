@@ -1,6 +1,7 @@
 #include "checkoutwidget.h"
 #include <QPushButton>
 #include <QDateTime>
+#include <QDebug>
 
 checkOutWidget::checkOutWidget(checkInHistory *history)
 {
@@ -34,6 +35,8 @@ void checkOutWidget::toggleCheckOut() {
 
 void checkOutWidget::setData(bool bCheckOut) {
     isCheckedOut = bCheckOut;
+    qDebug() <<"isCheckedOut: " <<isCheckedOut;
+
     if (bCheckOut) {
         checkOut->setText("Bike is checked-out");
     } else {

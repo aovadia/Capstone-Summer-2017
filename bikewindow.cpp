@@ -111,7 +111,8 @@ void bikeWindow::displayBikeInfo(int bid) {
     }
     this->resize(1500,1000);
     // Delete objects from window
-    delete editBikeID;
+    //delete editBikeID;
+    editBikeID->hide();
     delete acceptBikeID;
     delete enterBikeID;
     QLabel *id = new QLabel("Bike ID: " +QString::number(bid));
@@ -143,13 +144,9 @@ void bikeWindow::displayBikeInfo(int bid) {
 
    // myQVBox->addSpacerItem(vertSpace);
 
-
-
     checkOutWidget *myCheckOut = new checkOutWidget(myCheckInHistory);
     myCheckOut->setData(CheckedOut);
     myQVBox->addWidget(myCheckOut);
-
-
 
     bikeServiced *myBikeSeviced = new bikeServiced(myBikeHealth);
     myBikeSeviced->accessSql(query, bid);

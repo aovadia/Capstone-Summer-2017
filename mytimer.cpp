@@ -26,7 +26,8 @@ myTimer::myTimer(QSqlQuery *query1,int BikeId1)
 void myTimer::updateTimer() {
     bool CheckedOut;
     QDateTime prevTime;
-    int diff;
+    int diff, days;
+    const int SECSTODAYS = 86400;
     QString statement = "SELECT CheckedOut FROM Master WHERE BikeId = ";
     statement.append(QString::fromStdString(std::to_string(BikeId)));
     if (query->exec(statement)) {
@@ -43,6 +44,8 @@ void myTimer::updateTimer() {
             prevTime = query->value(0).toDateTime();
             QDateTime curTime = QDateTime::currentDateTime();
             diff = prevTime.secsTo(curTime);
+            days = diff / SECSTODAYS;
+            diff = diff % SECSTODAYS;
             if (CheckedOut) old_diff = diff;
             qDebug() <<"Prev time: " <<prevTime.toString();
             qDebug() <<"Cur time: " <<curTime.toString();
@@ -51,5 +54,13 @@ void myTimer::updateTimer() {
             //qDebug() <<"diff time: " <<QString::fromStdString(std::to_string( diff));
         }
     }
-    tElapsedLbl->setText(QString(QDateTime::fromTime_t(old_diff).toUTC().toString("hh:mm:ss")));
+    QString time;
+    if (days) {
+        time = QString::fromStdString(std::to_string(days));
+        time.append(" days , ");
+    } else {
+        time = "";
+    }
+    time.append(QDateTime::fromTime_t(old_diff).toUTC().toString("hh:mm:ss"));
+    tElapsedLbl->setText(time);
 }
