@@ -36,7 +36,8 @@ SOURCES += \
         bikehealth.cpp \
         bikeserviced.cpp \
         checkinhistory.cpp \
-    statistics.cpp
+        statistics.cpp \
+        analyzer.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -50,7 +51,8 @@ HEADERS += \
         bikehealth.h \
         bikeserviced.h \
         checkinhistory.h \
-    statistics.h
+        statistics.h \
+        analyzer.h
 
 FORMS += \
         mainwindow.ui
