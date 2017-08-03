@@ -29,8 +29,8 @@ def parseGPS(rawGpsData):
 
     if rawGpsData.find('GGA') > 0:
         # msg is a Model that stores the parsed gps data
-        msg_ = pynmea2.parse(rawGpsData) # parse raw gps coordinates
-        #msg = pynmea2.parse('$GNGGA,140816.00,,,,,,,,,,,,')
+        msg_ = pynmea3.parse(rawGpsData) # parse raw gps coordinates
+        #msg = pynmea3.parse('$GNGGA,140816.00,,,,,,,,,,,,')
         
     if msg_ == "":
         return "error\n"
@@ -97,15 +97,28 @@ def main():
     ending_point = ""
     serialPort = serial.Serial("/dev/ttyAMA0", 9600, timeout=0.5)
 
-    # totalDistance = 0.0
+    totalDistance = 0.0
+
+     # obtains running distance from MySQL server
+    cursor.execute("SELECT Distance FROM Master WHERE BikeId = %s ", (bikeID,))
+
+    #TUPLE: (u'0.0',)
+    temp = cursor.fetchone()
+    temp = str(temp)
+    
+    # 2nd element is distance
+    #print(tempList)
+    tempList  = temp.split("'")
+    
+    prevDistance = float(tempList[1])
+    totalDistance += prevDistance
+    
     while True:
         rawGps = serialPort.readline()
         msg = parseGPS(rawGps)
 
-        # obtains running distance from MySQL server
-        cursor.execute("SELECT Distance FROM Master WHERE BikeId = %s ", (bikeID,))
-        totalDistance = cursor.fetchone()
-    
+        
+        
         if msg == "error\n":
             print("Seeking...")
             pass
@@ -125,3 +138,4 @@ def main():
 main()
 cursor.close()
 cnx.close()
+
