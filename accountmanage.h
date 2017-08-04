@@ -1,7 +1,5 @@
-
 #ifndef ACCOUNTMANAGE_H
 #define ACCOUNTMANAGE_H
-
 
 #include <QWidget>
 #include <QVBoxLayout>
@@ -9,7 +7,6 @@
 #include "statistics.h"
 #include <QtSql/QSqlQuery>
 //Statistics *mStat;
-
 
 class accountManage : public QWidget
 {
@@ -26,10 +23,7 @@ public:
     void removeActiveWindows();
     bool isAddBikeActive;
     bool isBikeWindowActive;
-
     void accessBikeWindow(int);
-
-
 
 private:
     Statistics *mStat;

@@ -19,7 +19,6 @@ bikeServiced::bikeServiced(bikeHealth *myBikeHealth)
     setLayout(myQVBox);
 }
 
-
 void bikeServiced::toggleInService() {
     if (inService) {
         serviced->setText("Bike is active");

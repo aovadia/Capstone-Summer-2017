@@ -16,7 +16,6 @@ public:
     void setData(int);
     void sendQuery(QSqlQuery *);
 
-
 private slots:
     void changeHealth();
 

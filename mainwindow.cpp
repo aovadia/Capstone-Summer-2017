@@ -46,7 +46,6 @@ void MainWindow::on_cancelButton_released()
     QApplication::quit();
 }
 
-
 // Checks user entered account info when login button is pressed
 void MainWindow::on_loginButton_released()
 {

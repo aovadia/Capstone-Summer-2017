@@ -28,7 +28,6 @@ accountManage::accountManage(QWidget *parent) : QWidget(parent)
     searchBike->setText("Search for a Bike");
     statBike->setText("Bike statistics");
 
-
    // myQHBox->addSpacerItem(mySpacer);
     myQHBox->addWidget(newBike);
 
@@ -50,9 +49,6 @@ accountManage::accountManage(QWidget *parent) : QWidget(parent)
     connect(newBike, &QPushButton::released,this, &accountManage::addNewBike);
     connect(searchBike, &QPushButton::released, this, &accountManage::searchForBike);
     connect(statBike, &QPushButton::released, this, &accountManage::displayStatistics);
-
-
-
 }
 
 void accountManage::addNewBike() {
@@ -77,18 +73,14 @@ void accountManage::addNewBike() {
             myBikeWindow2->displayBikeInfo(total);
             myQHBox4->addWidget(myBikeWindow2);
             myQHBox4->addLayout(myQVBox);
-
         }
         else {
             QMessageBox::critical(this, "Connection error", "try again in a few seconds");
         }
-
     }
     else {
        QMessageBox::information(this, "Connection error", "try again in a few seconds");
    }
-
-
 }
 
 void accountManage::searchForBike() {
@@ -115,8 +107,6 @@ void accountManage::displayStatistics() {
     mStat->sendAccess(query);
     myQHBox4->addWidget(mStat);
     myQHBox4->addLayout(myQVBox);
-
-
 }
 
 void accountManage::queryAccess(QSqlQuery *a) {
@@ -140,7 +130,6 @@ void accountManage::removeActiveWindows() {
        delete mStat;
        isStatisticsActice = false;
     }
-
 }
 
 void accountManage::accessBikeWindow(int bid) {

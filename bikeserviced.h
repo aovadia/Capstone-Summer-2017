@@ -25,7 +25,6 @@ private:
     bool inService;
     QVBoxLayout *myQVBox;
     bikeHealth *myBikeHealth;
-
 };
 
 #endif // BIKESERVICED_H

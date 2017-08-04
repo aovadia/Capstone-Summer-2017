@@ -11,7 +11,6 @@ Statistics::Statistics()
         data.push_back(QString::fromStdString(std::to_string(a)));
     }
 
-
     QStringList mHeaders;
     compute = new Analyzer(query);
 
