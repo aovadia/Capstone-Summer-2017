@@ -4,7 +4,7 @@
 #include <QtSql/QSqlQuery>
 #include <QString>
 #include <QVector>
-#include <QVariant>
+//#include <QVariant>
 
 class Analyzer
 {
@@ -27,7 +27,7 @@ private:
     QSqlQuery *query;
     QString select1 = "SELECT BikeId" ;
     QString select2 = "SELECT BikeId, Distance ";
-    QString from = "FROM Master ";
+    QString from = " FROM Master ";
     QString where = "WHERE ";
     QString orderBy = "ORDER BY ";
     QString desc = " DESC";
