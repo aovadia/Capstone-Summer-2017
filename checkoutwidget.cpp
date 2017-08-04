@@ -3,8 +3,9 @@
 #include <QDateTime>
 #include <QDebug>
 
-checkOutWidget::checkOutWidget(checkInHistory *history)
+checkOutWidget::checkOutWidget(checkInHistory *history, int id)
 {
+    BikeId = id;
     mTimeLine = history;
     myQVBox = new QVBoxLayout();
     checkOut = new QLabel();
@@ -23,12 +24,12 @@ void checkOutWidget::toggleCheckOut() {
     if (isCheckedOut) {
         isCheckedOut = false;
         checkOut->setText("Bike is Checked-in");
-        mTimeLine->setToggled(QDateTime::currentDateTime(), isCheckedOut,b, 2 );
+        mTimeLine->setToggled(QDateTime::currentDateTime(), isCheckedOut,b, BikeId );
         // Update server
     } else {
         isCheckedOut = true;
         checkOut->setText("Bike is Checked-out");
-        mTimeLine->setToggled(QDateTime::currentDateTime(), isCheckedOut,b, 2);
+        mTimeLine->setToggled(QDateTime::currentDateTime(), isCheckedOut,b, BikeId);
         // Update server
     }
 }

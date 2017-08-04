@@ -11,7 +11,7 @@ class checkOutWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit checkOutWidget(checkInHistory*);
+    explicit checkOutWidget(checkInHistory*, int id);
     void setData(bool);
 
 private slots:
@@ -22,6 +22,7 @@ private:
     QVBoxLayout *myQVBox;
     bool isCheckedOut;
     checkInHistory *mTimeLine;
+    int BikeId;
 };
 
 #endif // CHECKINWIDGET_H
