@@ -1,9 +1,9 @@
-#include "accountmanage.h"
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QSpacerItem>
 #include <QDebug>
 #include <QMessageBox>
+#include "accountmanage.h"
 
 accountManage::accountManage(QWidget *parent) : QWidget(parent)
 {
@@ -59,7 +59,7 @@ void accountManage::addNewBike() {
 
     // Create the elements neccessary for a new bike
     // Send data to the server
-   if(query->exec("SELECT COUNT(*) FROM Master")) {
+   if (query->exec("SELECT COUNT(*) FROM Master")) {
         query->next();
         int total = query->value(0).toInt();
         total++;
@@ -72,11 +72,11 @@ void accountManage::addNewBike() {
             myQHBox4->removeItem(myQVBox);
             removeActiveWindows();
             myBikeWindow2 = new bikeWindow();
-            myBikeWindow2->displayBikeInfo(total);
+            isAddBikeActive = true;
             myBikeWindow2->queryAccess(query);
+            myBikeWindow2->displayBikeInfo(total);
             myQHBox4->addWidget(myBikeWindow2);
             myQHBox4->addLayout(myQVBox);
-            isAddBikeActive = true;
 
         }
         else {
@@ -99,6 +99,7 @@ void accountManage::searchForBike() {
     removeActiveWindows();
     isBikeWindowActive = true;
     myBikeWindow = new bikeWindow();
+    resize(800,500);
     myBikeWindow->queryAccess(query);
     myQHBox4->addWidget(myBikeWindow);
     myQHBox4->addLayout(myQVBox);
@@ -106,6 +107,15 @@ void accountManage::searchForBike() {
 }
 
 void accountManage::displayStatistics() {
+    myQHBox4->removeItem(myQVBox);
+    removeActiveWindows();
+    this->resize(1550,900);
+    mStat = new Statistics();
+    isStatisticsActice = true;
+    mStat->sendAccess(query);
+    myQHBox4->addWidget(mStat);
+    myQHBox4->addLayout(myQVBox);
+
 
 }
 
@@ -125,5 +135,22 @@ void accountManage::removeActiveWindows() {
         delete myBikeWindow;
         isBikeWindowActive  = false;
     }
+    if (isStatisticsActice) {
+       myQHBox4->removeWidget(mStat);
+       delete mStat;
+       isStatisticsActice = false;
+    }
 
+}
+
+void accountManage::accessBikeWindow(int bid) {
+    myQHBox4->removeItem(myQVBox);
+    removeActiveWindows();
+    myBikeWindow2 = new bikeWindow();
+    isAddBikeActive = true;
+    myBikeWindow2->queryAccess(query);
+    myBikeWindow2->displayBikeInfo(bid);
+    myQHBox4->addWidget(myBikeWindow2);
+    myQHBox4->addLayout(myQVBox);
+    this->show();
 }
