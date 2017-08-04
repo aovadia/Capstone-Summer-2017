@@ -56,6 +56,7 @@ void MainWindow::on_loginButton_released()
         qDebug() <<"Success!";
         hide();
         accountManage *myManage = new accountManage();
+        myManage->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         myManage->queryAccess(query);
         myManage->show();
     } else { /* Display error message on status bar */

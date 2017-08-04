@@ -61,6 +61,13 @@ void bikeWindow::checkBikeID() {
 }
 
 void bikeWindow::displayBikeInfo(int bid) {
+    this->resize(1500,1000);
+    // Delete objects from window
+    //delete editBikeID;
+    editBikeID->hide();
+    delete acceptBikeID;
+    delete enterBikeID;
+
     bool CheckedOut, Service;
     double Distance;
     int Health, rentalTime;
@@ -69,7 +76,7 @@ void bikeWindow::displayBikeInfo(int bid) {
     std::string val = std::to_string(bid);
     statement.append(val);
     bool receivedMaster;
-    if (query->exec(QString::fromUtf8(statement.c_str()))) {
+    if (query->exec(QString::fromStdString(statement))) {
         receivedMaster = true;
         query->next();
         CheckedOut = query->value(1).toBool();
@@ -109,12 +116,7 @@ void bikeWindow::displayBikeInfo(int bid) {
         }
         qDebug() <<"timeline: " <<QString::fromUtf8(timeline[a].c_str());
     }
-    this->resize(1500,1000);
-    // Delete objects from window
-    //delete editBikeID;
-    editBikeID->hide();
-    delete acceptBikeID;
-    delete enterBikeID;
+
     QLabel *id = new QLabel("Bike ID: " +QString::number(bid));
     id->setFont(QFont("Times", 16, QFont::Bold));
     id->setAlignment(Qt::AlignHCenter);
@@ -131,6 +133,7 @@ void bikeWindow::displayBikeInfo(int bid) {
     bikeHealth *myBikeHealth = new bikeHealth(bikeID);
     myBikeHealth->sendQuery(query);
     myBikeHealth->setData(Health);
+    myBikeHealth->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     QVBHealth->addWidget(myBikeHealth);
 
     rentalTimeWidget *myRentalTime = new rentalTimeWidget();
@@ -144,7 +147,7 @@ void bikeWindow::displayBikeInfo(int bid) {
 
    // myQVBox->addSpacerItem(vertSpace);
 
-    checkOutWidget *myCheckOut = new checkOutWidget(myCheckInHistory);
+    checkOutWidget *myCheckOut = new checkOutWidget(myCheckInHistory, bikeID);
     myCheckOut->setData(CheckedOut);
     myQVBox->addWidget(myCheckOut);
 
@@ -154,6 +157,7 @@ void bikeWindow::displayBikeInfo(int bid) {
     myQVBox->addWidget(myBikeSeviced);
 
     myTimer *myTimerLayout = new myTimer(query, bid);
+    myTimerLayout->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     QVBHealth->addWidget(myTimerLayout);
 
 }
