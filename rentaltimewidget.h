@@ -15,10 +15,6 @@ public:
    explicit rentalTimeWidget();
     void setData(int);
 
-private slots:
-    void setRentalTime();
-    void saveRentalTime();
-
 private:
     QLabel *rentalTimeUpdateLbl;
     QVBoxLayout *myQVBox;

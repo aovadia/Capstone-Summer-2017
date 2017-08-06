@@ -20,24 +20,35 @@ bikeServiced::bikeServiced(bikeHealth *myBikeHealth)
 }
 
 void bikeServiced::toggleInService() {
-    if (inService) {
-        serviced->setText("Bike is active");
-        inService = false;
-        myBikeHealth->setData(10);
-    } else {
-        serviced->setText("Bike is being serviced");
-        inService = true;
-    }
-    // Reflect change in server
-    QString statement = "UPDATE Master SET Service = '";
-    statement.append(QString::fromStdString(std::to_string(inService)));
-    statement.append("' WHERE BikeId = ");
+    bool isCheckedOut = false;
+    QString statement = "SELECT CheckedOut FROM Master Where BikeId = ";
     statement.append(QString::fromStdString(std::to_string(bikeID)));
-    if (!query->exec(statement))  {
-        QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-        qDebug() <<"Statement: " << statement;
+    if (query->exec(statement)) {
+        query->next();
+        isCheckedOut = query->value(0).toBool();
     }
-
+    else QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+    if (!isCheckedOut) {
+        if (inService) {
+            serviced->setText("Bike is active");
+            inService = false;
+            myBikeHealth->setData(10);
+        }
+        else {
+            serviced->setText("Bike is being serviced");
+            inService = true;
+        }
+        // Reflect change in server
+        statement = "UPDATE Master SET Service = '";
+        statement.append(QString::fromStdString(std::to_string(inService)));
+        statement.append("' WHERE BikeId = ");
+        statement.append(QString::fromStdString(std::to_string(bikeID)));
+        if (!query->exec(statement))  {
+            QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+            qDebug() <<"Statement: " << statement;
+        }
+    }
+    else QMessageBox::warning(this, "Bike Checked Out", "Bike must be returned to the shop in order to be serviced.");
 }
 
 void bikeServiced::setData(bool bServiced) {

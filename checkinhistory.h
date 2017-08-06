@@ -17,7 +17,7 @@ public:
     explicit checkInHistory(const int id, rentalTimeWidget *a);
     void testEnterCheckinData();
     void setData(QVector<std::string>);
-    void setToggled(QDateTime, bool, QVector<std::string> *, int);
+    bool setToggled(QDateTime, bool, QVector<std::string> *, int);
     void sendQuery(QSqlQuery *);
 
 private slots:

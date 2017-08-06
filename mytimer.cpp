@@ -47,11 +47,11 @@ void myTimer::updateTimer() {
             days = diff / SECSTODAYS;
             diff = diff % SECSTODAYS;
             if (CheckedOut) old_diff = diff;
-            qDebug() <<"Prev time: " <<prevTime.toString();
+        /*    qDebug() <<"Prev time: " <<prevTime.toString();
             qDebug() <<"Cur time: " <<curTime.toString();
             qDebug() <<"Diff : " <<diff;
 
-            //qDebug() <<"diff time: " <<QString::fromStdString(std::to_string( diff));
+            //qDebug() <<"diff time: " <<QString::fromStdString(std::to_string( diff)); */
         }
     }
     QString time;

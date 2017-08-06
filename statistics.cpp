@@ -71,17 +71,17 @@ Statistics::Statistics()
     buttonLayoutHorizontal->addWidget(bCheckedIn);
     buttonLayoutHorizontal->addWidget(bCheckedOut);
     buttonLayoutHorizontal->addWidget(bHealthAbove);
-    buttonLayoutHorizontal->addWidget(bActive);
+    buttonLayoutHorizontal->addWidget(bHealthBelow);
 
+    buttonLayoutHorizontal2->addWidget(bActive);
     buttonLayoutHorizontal2->addWidget(bInService);
-    buttonLayoutHorizontal2->addWidget(bHealthBelow);
-    buttonLayoutHorizontal2->addWidget(bCheckedInDist);
     buttonLayoutHorizontal2->addWidget(bCheckedOutDist);
+    buttonLayoutHorizontal2->addWidget(bCheckedInDist);
 
     buttonLayoutHorizontal3->addWidget(bActiveDist);
     buttonLayoutHorizontal3->addWidget(bInServiceDist);
-    buttonLayoutHorizontal3->addWidget(bHealthAboveDist);
     buttonLayoutHorizontal3->addWidget(bHealthBelowDist);
+    buttonLayoutHorizontal3->addWidget(bHealthAboveDist);
 
     mainLayout->addLayout(buttonLayoutHorizontal);
     mainLayout->addLayout(buttonLayoutHorizontal2);

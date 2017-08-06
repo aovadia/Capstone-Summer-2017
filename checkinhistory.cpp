@@ -64,7 +64,7 @@ void checkInHistory::setData(QVector<std::string> data) {
     }
 }
 
-void checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, QVector<std::string> *data, int BikeId) {
+bool checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, QVector<std::string> *data, int BikeId) {
     QString rentalIdQuery = "SELECT COUNT(*) FROM Rentals";
     if (!query->exec(rentalIdQuery)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
     query->next();
@@ -88,7 +88,6 @@ void checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, QVector<std::
 
     }
     else {
-
         setRentalTime();
         mTimeWidget->setData(RentalPlan);
         checkOut.append(QString::fromStdString( std::to_string(BikeId)));
@@ -104,6 +103,7 @@ void checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, QVector<std::
         if(!query->exec(checkOut2)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
     }
     updateList(BikeId);
+    return false;
 }
 
 void checkInHistory::updateList(int BikeId) {

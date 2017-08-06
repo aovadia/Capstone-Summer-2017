@@ -61,6 +61,7 @@ void bikeWindow::checkBikeID() {
 }
 
 void bikeWindow::displayBikeInfo(int bid) {
+    bikeID = bid;
     this->resize(1500,1000);
     // Delete objects from window
     //delete editBikeID;
@@ -136,6 +137,29 @@ void bikeWindow::displayBikeInfo(int bid) {
     myBikeHealth->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     QVBHealth->addWidget(myBikeHealth);
 
+
+    QLabel *distanceTravelLbl = new QLabel("Total distance traveled");
+    distanceTravelLbl->setFont(QFont("Times", 16, QFont::Bold));
+    QVBHealth->addWidget(distanceTravelLbl);
+
+    QLabel *distanceTravelData = new QLabel();
+    int kilometers = Distance / 1;
+    double meters = ((Distance - kilometers) * 1000);
+    QString text;
+    if (kilometers) {
+        text.append(QString::fromStdString(std::to_string(kilometers)));
+        text.append(" km ");
+    }
+    if (meters) {
+        text.append(QString::number(meters, 'f', 2));
+        text.append(" m");
+    }
+    if (!kilometers && !meters) {
+        text.append("0 m");
+    }
+    distanceTravelData->setText(text);
+    QVBHealth->addWidget(distanceTravelData);
+
     rentalTimeWidget *myRentalTime = new rentalTimeWidget();
     myRentalTime->setData(rentalTime);
     QVBHealth->addWidget(myRentalTime);
@@ -148,7 +172,7 @@ void bikeWindow::displayBikeInfo(int bid) {
    // myQVBox->addSpacerItem(vertSpace);
 
     checkOutWidget *myCheckOut = new checkOutWidget(myCheckInHistory, bikeID);
-    myCheckOut->setData(CheckedOut);
+    myCheckOut->setData(CheckedOut, query);
     myQVBox->addWidget(myCheckOut);
 
     bikeServiced *myBikeSeviced = new bikeServiced(myBikeHealth);

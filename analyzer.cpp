@@ -120,7 +120,23 @@ QVector<QString> Analyzer::DistanceBikesCheckedIn() {
         querySuccess = true;
         while(query->next()) {
             result.push_back(query->value(0).toString());
-            result.push_back(query->value(1).toString());
+            double  Distance = query->value(1).toDouble();
+            int kilometers = Distance / 1;
+            double meters = ((Distance - kilometers) * 1000);
+            QString text;
+            if (kilometers) {
+                text.append(QString::fromStdString(std::to_string(kilometers)));
+                text.append(" km ");
+            }
+            if (meters) {
+                text.append(QString::number(meters, 'f', 2));
+                text.append(" m");
+            }
+            if (!kilometers && !meters) {
+                text.append("0 m");
+            }
+
+            result.push_back(text);
         }
     }
     if (querySuccess && result.empty()) result.push_back( "None found");
@@ -138,7 +154,23 @@ QVector<QString> Analyzer::DistanceBikesCheckedOut() {
         querySuccess = true;
         while(query->next()) {
             result.push_back(query->value(0).toString());
-            result.push_back(query->value(1).toString());
+            double  Distance = query->value(1).toDouble();
+            int kilometers = Distance / 1;
+            double meters = ((Distance - kilometers) * 1000);
+            QString text;
+            if (kilometers) {
+                text.append(QString::fromStdString(std::to_string(kilometers)));
+                text.append(" km ");
+            }
+            if (meters) {
+                text.append(QString::number(meters, 'f', 2));
+                text.append(" m");
+            }
+            if (!kilometers && !meters) {
+                text.append("0 m");
+            }
+
+            result.push_back(text);
         }
     }
     if (querySuccess && result.empty()) result.push_back( "None found");
@@ -156,7 +188,23 @@ QVector<QString> Analyzer::DistanceBikesInService() {
         querySuccess = true;
         while(query->next()) {
             result.push_back(query->value(0).toString());
-            result.push_back(query->value(1).toString());
+            double  Distance = query->value(1).toDouble();
+            int kilometers = Distance / 1;
+            double meters = ((Distance - kilometers) * 1000);
+            QString text;
+            if (kilometers) {
+                text.append(QString::fromStdString(std::to_string(kilometers)));
+                text.append(" km ");
+            }
+            if (meters) {
+                text.append(QString::number(meters, 'f', 2));
+                text.append(" m");
+            }
+            if (!kilometers && !meters) {
+                text.append("0 m");
+            }
+
+            result.push_back(text);
         }
     }
     if (querySuccess && result.empty()) result.push_back( "None found");
@@ -174,7 +222,23 @@ QVector<QString> Analyzer::DistanceBikesActive() {
         querySuccess = true;
         while(query->next()) {
             result.push_back(query->value(0).toString());
-            result.push_back(query->value(1).toString());
+            double  Distance = query->value(1).toDouble();
+            int kilometers = Distance / 1;
+            double meters = ((Distance - kilometers) * 1000);
+            QString text;
+            if (kilometers) {
+                text.append(QString::fromStdString(std::to_string(kilometers)));
+                text.append(" km ");
+            }
+            if (meters) {
+                text.append(QString::number(meters, 'f', 2));
+                text.append(" m");
+            }
+            if (!kilometers && !meters) {
+                text.append("0 m");
+            }
+
+            result.push_back(text);
         }
     }
     if (querySuccess && result.empty()) result.push_back( "None found");
@@ -192,7 +256,23 @@ QVector<QString> Analyzer::DistanceBikesAbove5() {
         querySuccess = true;
         while(query->next()) {
             result.push_back(query->value(0).toString());
-            result.push_back(query->value(1).toString());
+            double  Distance = query->value(1).toDouble();
+            int kilometers = Distance / 1;
+            double meters = ((Distance - kilometers) * 1000);
+            QString text;
+            if (kilometers) {
+                text.append(QString::fromStdString(std::to_string(kilometers)));
+                text.append(" km ");
+            }
+            if (meters) {
+                text.append(QString::number(meters, 'f', 2));
+                text.append(" m");
+            }
+            if (!kilometers && !meters) {
+                text.append("0 m");
+            }
+
+            result.push_back(text);
         }
     }
     if (querySuccess && result.empty()) result.push_back( "None found");
@@ -210,7 +290,23 @@ QVector<QString> Analyzer::DistanceBikesBelow5() {
         querySuccess = true;
         while(query->next()) {
             result.push_back(query->value(0).toString());
-            result.push_back(query->value(1).toString());
+            double  Distance = query->value(1).toDouble();
+            int kilometers = Distance / 1;
+            double meters = ((Distance - kilometers) * 1000);
+            QString text;
+            if (kilometers) {
+                text.append(QString::fromStdString(std::to_string(kilometers)));
+                text.append(" km ");
+            }
+            if (meters) {
+                text.append(QString::number(meters, 'f', 2));
+                text.append(" m");
+            }
+            if (!kilometers && !meters) {
+                text.append("0 m");
+            }
+
+            result.push_back(text);
         }
     }
     if (querySuccess && result.empty()) result.push_back( "None found");
