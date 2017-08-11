@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql webenginewidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -37,7 +37,8 @@ SOURCES += \
         bikeserviced.cpp \
         checkinhistory.cpp \
         statistics.cpp \
-        analyzer.cpp
+        analyzer.cpp \
+    pathview.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -52,7 +53,8 @@ HEADERS += \
         bikeserviced.h \
         checkinhistory.h \
         statistics.h \
-        analyzer.h
+        analyzer.h \
+    pathview.h
 
 FORMS += \
         mainwindow.ui

@@ -2,6 +2,7 @@
 #include <QPushButton>
 #include <QDebug>
 #include <QMessageBox>
+#include <QHeaderView>
 #include "bikewindow.h"
 #include "accountmanage.h"
 
@@ -25,7 +26,7 @@ Statistics::Statistics()
     mTable->setRowCount(200);
     mTable->setColumnCount(8);
     //mTable->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter);
-
+    mTable->setAlternatingRowColors(true);
 
     mainLayout->addWidget(mTable);
 

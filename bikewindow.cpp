@@ -6,10 +6,13 @@
 #include "bikehealth.h"
 #include "bikeserviced.h"
 #include "checkinhistory.h"
+#include <pathview.h>
 #include <QDebug>
 #include <QMessageBox>
 #include <QSpacerItem>
 #include <QTime>
+#include <QClipboard>
+#include <QApplication>
 
 bikeWindow::bikeWindow(QWidget *parent) : QWidget(parent)
 {
@@ -183,6 +186,45 @@ void bikeWindow::displayBikeInfo(int bid) {
     myTimer *myTimerLayout = new myTimer(query, bid);
     myTimerLayout->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     QVBHealth->addWidget(myTimerLayout);
+
+    QPushButton *openMap = new QPushButton();
+    openMap->setText("Open map");
+
+    connect(openMap, &QPushButton::released, this, &bikeWindow::openMapView);
+
+    QVBHealth->addWidget(openMap);
+
+}
+
+void bikeWindow::openMapView() {
+    QString statement = "SELECT * FROM Locations WHERE BikeId = ";
+    statement.append(QString::fromStdString(std::to_string(bikeID)));
+    QString coordinateData;
+    int pos = 0;
+    if (query->exec(statement)) {
+        while (query->next()) {
+            QString data;
+            data = QString::fromStdString(std::to_string(pos));
+            data.append(",  , ");
+            data.append(query->value(2).toString());
+            data.append(", ");
+            data.append(query->value(3).toString());
+            data.append("\n");
+            coordinateData.append(data);
+            pos++;
+        }
+        if (!coordinateData.isEmpty()) {
+            QClipboard *myClip = QApplication::clipboard();
+            myClip->setText(coordinateData);
+            QMessageBox::information(this, "Success", "Coordinate data copied to clipboard!\nPlease unselect open in a new window");
+            PathView *mPathView = new PathView();
+            mPathView->show();
+        } else {
+            QMessageBox::warning(this, "Choose a different bike", "No coordinate data on server",);
+        }
+    } else {
+        QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+    }
 
 }
 

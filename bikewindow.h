@@ -20,6 +20,7 @@ public:
 
 private slots:
     void checkBikeID();
+    void openMapView();
 
 private:
     QSqlQuery *query;
