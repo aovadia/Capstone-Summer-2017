@@ -284,7 +284,7 @@ QVector<QString> Analyzer::DistanceBikesBelow5() {
     QString statement = select2;
     statement.append(from);
     statement.append(where);
-    statement.append("Health = 5");
+    statement.append("Health < 5");
     bool querySuccess = false;
     if (query->exec(statement)) {
         querySuccess = true;

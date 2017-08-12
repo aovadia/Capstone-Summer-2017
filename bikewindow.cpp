@@ -6,6 +6,7 @@
 #include "bikehealth.h"
 #include "bikeserviced.h"
 #include "checkinhistory.h"
+#include "pathview.h"
 #include <QDebug>
 #include <QMessageBox>
 #include <QSpacerItem>
@@ -186,6 +187,11 @@ void bikeWindow::displayBikeInfo(int bid) {
     myTimerLayout->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     QVBHealth->addWidget(myTimerLayout);
 
+    QPushButton *openMap = new QPushButton();
+    openMap->setText("Open map");
+    connect(openMap, &QPushButton::released, this, &bikeWindow::openMapView);
+    QVBHealth->addWidget(openMap);
+
 }
 
 void bikeWindow::openMapView() {
@@ -212,7 +218,7 @@ void bikeWindow::openMapView() {
             PathView *mPathView = new PathView();
             mPathView->show();
         } else {
-            QMessageBox::warning(this, "Choose a different bike", "No coordinate data on server",);
+            QMessageBox::warning(this, "Choose a different bike", "No coordinate data on server");
         }
     } else {
         QMessageBox::warning(this, "Connection error", "try again in a few seconds");
