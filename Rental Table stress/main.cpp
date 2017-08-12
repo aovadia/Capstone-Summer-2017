@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
             update.append(QString::fromStdString(std::to_string(std::rand() % 9000 +1)));
             update.append(")");
             qDebug() <<update;
-            query->exec(update);
+          //  query->exec(update);
         }
     }
 

@@ -203,7 +203,11 @@ void bikeWindow::openMapView() {
         while (query->next()) {
             QString data;
             data = QString::fromStdString(std::to_string(pos));
-            data.append(",  , ");
+            data.append(",");
+            QString time = query->value(4).toString();
+            time[10] = ' ';
+            data.append(time);
+            data.append(", ");
             data.append(query->value(2).toString());
             data.append(", ");
             data.append(query->value(3).toString());
