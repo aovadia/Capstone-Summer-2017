@@ -14,11 +14,10 @@
  * Encrypts the entered 'mPassword' entry using sha256
  * Sets private membors 'name' and 'password'
  */
-checkUser::checkUser(QString mName, QString mPassword)
+checkUser::checkUser(QString mName, QString *mPassword)
 {
     name = mName.toStdString();
-    const char * tempPass = mPassword.toStdString().c_str();
-    QString encryptPass = generateHash(tempPass);
+    QString encryptPass = generateHash(mPassword);
     password = encryptPass.toStdString();
 }
 
@@ -54,9 +53,9 @@ return found;
 }
 // Encrypts 'char *' using sha256 hash algorithm
 // Returns QString value in Hex format
-QString checkUser::generateHash(const char *data) {
+QString checkUser::generateHash(QString *data) {
     QCryptographicHash *userPass = new QCryptographicHash(QCryptographicHash::Sha256);
-    userPass->addData(data, strlen(data));
+    userPass->addData(data->toStdString().c_str(), strlen(data->toStdString().c_str()));
     qDebug() <<"generated pass: " <<userPass->result().toHex();
     return userPass->result().toHex();
 }

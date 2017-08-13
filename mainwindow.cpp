@@ -49,7 +49,7 @@ void MainWindow::on_cancelButton_released()
 // Checks user entered account info when login button is pressed
 void MainWindow::on_loginButton_released()
 {
-    checkUser *isUPValid = new checkUser(ui->usernameTxt->text(), ui->passwordTxt->text());
+    checkUser *isUPValid = new checkUser(ui->usernameTxt->text(), &ui->passwordTxt->text());
     isUPValid->queryAccess(query);
     if (isUPValid->isAccountFound()) {
         qDebug() <<"Success!";

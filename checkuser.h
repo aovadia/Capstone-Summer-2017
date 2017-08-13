@@ -8,14 +8,14 @@
 class checkUser
 {
 public:
-    checkUser(QString, QString);
+    checkUser(QString, QString *);
     ~checkUser();
     bool isAccountFound() const;
     void queryAccess(QSqlQuery *a);
 
 private:
     std::string name, password;
-    QString generateHash(const char *data);
+    QString generateHash(QString *data);
     QSqlQuery *query;
 };
 
