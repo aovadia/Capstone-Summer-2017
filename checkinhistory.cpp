@@ -1,5 +1,4 @@
 #include "checkinhistory.h"
-#include <QDebug>
 #include <QClipboard>
 #include <QApplication>
 #include <QDateTime>
@@ -20,17 +19,13 @@ checkInHistory::checkInHistory(const int id, rentalTimeWidget *a)
     myList->setMinimumWidth(375);
     myList->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
     myQVBox->addWidget(myList);
-   // myQHBox->addSpacerItem(horiSpace);
     setLayout(myQVBox);
 }
 
 // Method to copy item to clipboard
 void checkInHistory::copyCheckInData() {
-    int pos = myList->currentRow();
-    qDebug() <<"pos: " <<QString::number(pos);
     QClipboard *copyItem = QApplication::clipboard();
     copyItem->setText(myList->currentItem()->text());
-
 }
 
 void checkInHistory::testEnterCheckinData() {
@@ -46,7 +41,6 @@ void checkInHistory::setData(QVector<std::string> data) {
     myList->clear();
     std::string Year, Month, Day, Time, Status;
     for (int a = 0; a < data.size(); a++) {
-        qDebug() <<"SetData string: "<<QString::fromStdString(data[a]);
         Year = data[a].substr(0, 4);
         Month = data[a].substr(5, 2);
         Day = data[a].substr(8, 2);
@@ -64,7 +58,7 @@ void checkInHistory::setData(QVector<std::string> data) {
     }
 }
 
-bool checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, QVector<std::string> *data, int BikeId) {
+bool checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, int BikeId) {
     QString rentalIdQuery = "SELECT COUNT(*) FROM Rentals";
     if (!query->exec(rentalIdQuery)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
     query->next();
@@ -81,11 +75,9 @@ bool checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, QVector<std::
         checkIn.append("'");
         checkIn.append(checkInEnd);
         checkIn.append(QString::fromStdString( std::to_string(RentalId)));
-        qDebug() <<"checkin statement: " <<checkIn;
         if (!query->exec(checkIn)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
         checkIn2.append(QString::fromStdString( std::to_string(BikeId)));
         if(!query->exec(checkIn2)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-
     }
     else {
         setRentalTime();
@@ -97,7 +89,6 @@ bool checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, QVector<std::
         checkOut.append("NULL, ");
         checkOut.append(QString::fromStdString( std::to_string(RentalPlan)));
         checkOut.append(checkOutEnd);
-        qDebug() <<"checkout statement: " <<checkOut;
         if (!query->exec(checkOut)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
         checkOut2.append(QString::fromStdString( std::to_string(BikeId)));
         if(!query->exec(checkOut2)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
@@ -132,17 +123,13 @@ void checkInHistory::updateList(int BikeId) {
         for (int b = 0; b < timeline[a].size(); b++) {
             if (timeline[a][b] == 'T') timeline[a][b] = ' ';
         }
-        qDebug() <<"timeline: " <<QString::fromUtf8(timeline[a].c_str());
         setData(timeline);
     }
-
-
 }
 
 void checkInHistory::sendQuery(QSqlQuery *a) {
     query = a;
 }
-
 
 void checkInHistory::setRentalTime() {
     mDialog = new QDialog();

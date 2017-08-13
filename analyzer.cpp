@@ -12,12 +12,10 @@ QVector<QString> Analyzer::TotalBikesCheckedIn() {
     statement.append(from);
     statement.append(where);
     statement.append("CheckedOut = 0");
-    qDebug() << "Analyze statement: " <<statement;
     bool querySuccess = false;
     if (query->exec(statement)) {
         querySuccess = true;
         while(query->next()) {
-            //qDebug() << query->value(0).toString();
             result.push_back(query->value(0).toString());
         }
     } else {
@@ -30,7 +28,6 @@ QVector<QString> Analyzer::TotalBikesCheckedIn() {
 
 QVector<QString> Analyzer::TotalBikesCheckedOut() {
     QVector<QString> result;
-
     QString statement = select1;
     statement.append(from);
     statement.append(where);
@@ -135,7 +132,6 @@ QVector<QString> Analyzer::DistanceBikesCheckedIn() {
             if (!kilometers && !meters) {
                 text.append("0 m");
             }
-
             result.push_back(text);
         }
     }
@@ -169,7 +165,6 @@ QVector<QString> Analyzer::DistanceBikesCheckedOut() {
             if (!kilometers && !meters) {
                 text.append("0 m");
             }
-
             result.push_back(text);
         }
     }
@@ -203,7 +198,6 @@ QVector<QString> Analyzer::DistanceBikesInService() {
             if (!kilometers && !meters) {
                 text.append("0 m");
             }
-
             result.push_back(text);
         }
     }
@@ -237,7 +231,6 @@ QVector<QString> Analyzer::DistanceBikesActive() {
             if (!kilometers && !meters) {
                 text.append("0 m");
             }
-
             result.push_back(text);
         }
     }
@@ -271,7 +264,6 @@ QVector<QString> Analyzer::DistanceBikesAbove5() {
             if (!kilometers && !meters) {
                 text.append("0 m");
             }
-
             result.push_back(text);
         }
     }
@@ -305,7 +297,6 @@ QVector<QString> Analyzer::DistanceBikesBelow5() {
             if (!kilometers && !meters) {
                 text.append("0 m");
             }
-
             result.push_back(text);
         }
     }

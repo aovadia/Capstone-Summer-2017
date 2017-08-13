@@ -26,7 +26,6 @@ private:
     QProgressBar *healthBar;
     void setHealth();
     QSqlQuery *query;
-
 };
 
 #endif // BIKEHEALTH_H

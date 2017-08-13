@@ -1,6 +1,5 @@
 #ifndef CHECKUSER_H
 #define CHECKUSER_H
-
 #include <QString>
 #include <string>
 #include <QtSql/QSqlQuery>

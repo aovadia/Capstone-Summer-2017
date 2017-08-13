@@ -11,7 +11,6 @@ public:
     explicit initialScreen(QWidget *parent = 0);
 
 private:
-    int getNumberOfBikes() const;
     void manageBikes();
     void displayAboutUs() const;
 };

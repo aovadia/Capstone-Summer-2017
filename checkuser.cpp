@@ -35,13 +35,12 @@ bool checkUser::isAccountFound() const {
     std::string statement = "SELECT Password FROM Users WHERE UserId = '";
     statement.append(name);
     statement.append("'");
-    qDebug() <<"statement is: " <<QString::fromUtf8(statement.c_str());
     if (query->exec(QString::fromUtf8(statement.c_str()))) {
         query->next();
         if (query->value(0).toString() != NULL) {
           foundPwd = query->value(0).toString().toStdString();
           if (password == foundPwd) found = true;
-      }
+        }
     }
     else {
         QMessageBox *serverErr = new QMessageBox();
@@ -63,4 +62,3 @@ QString checkUser::generateHash(QString *data) {
 void checkUser::queryAccess(QSqlQuery *a) {
     query = a;
 }
-

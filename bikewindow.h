@@ -17,7 +17,6 @@ public:
     void queryAccess(QSqlQuery *);
     void displayBikeInfo(int);
 
-
 private slots:
     void checkBikeID();
 
@@ -32,7 +31,6 @@ private:
     QHBoxLayout *myQHBox4;
     int bikeID;
     void openMapView();
-
     void backToManagePage();
     QString setTimeOfUpdate();
 };

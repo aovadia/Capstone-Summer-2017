@@ -44,10 +44,6 @@ initialScreen::initialScreen(QWidget *parent) : QWidget(parent)
     this->setFixedSize(this->width(), this->height());
 }
 
-int initialScreen::getNumberOfBikes() const {
-    // Search database and return the number of bikes in the system
-}
-
 void initialScreen::manageBikes() {
 
     MainWindow *main = new MainWindow;

@@ -1,7 +1,6 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QSpacerItem>
-#include <QDebug>
 #include <QMessageBox>
 #include "accountmanage.h"
 
@@ -28,13 +27,10 @@ accountManage::accountManage(QWidget *parent) : QWidget(parent)
     searchBike->setText("Search for a Bike");
     statBike->setText("Bike statistics");
 
-   // myQHBox->addSpacerItem(mySpacer);
     myQHBox->addWidget(newBike);
 
-   // myQHBox2->addSpacerItem(mySpacer);
     myQHBox2->addWidget(searchBike);
 
- //   myQHBox3->addSpacerItem(mySpacer);
     myQHBox3->addWidget(statBike);
 
     myQVBox->addLayout(myQHBox);
@@ -95,7 +91,6 @@ void accountManage::searchForBike() {
     myBikeWindow->queryAccess(query);
     myQHBox4->addWidget(myBikeWindow);
     myQHBox4->addLayout(myQVBox);
-
 }
 
 void accountManage::displayStatistics() {
@@ -112,7 +107,6 @@ void accountManage::displayStatistics() {
 void accountManage::queryAccess(QSqlQuery *a) {
     query = a;
 }
-
 
 void accountManage::removeActiveWindows() {
     if (isAddBikeActive) {

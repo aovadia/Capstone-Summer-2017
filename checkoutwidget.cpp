@@ -1,7 +1,6 @@
 #include "checkoutwidget.h"
 #include <QPushButton>
 #include <QDateTime>
-#include <QDebug>
 #include <QMessageBox>
 
 checkOutWidget::checkOutWidget(checkInHistory *history, int id)
@@ -17,11 +16,9 @@ checkOutWidget::checkOutWidget(checkInHistory *history, int id)
     myQVBox->addWidget(toggleCheckoutBtn);
     connect(toggleCheckoutBtn, &QPushButton::released, this, &checkOutWidget::toggleCheckOut);
     setLayout(myQVBox);
-
 }
 
 void checkOutWidget::toggleCheckOut() {
-    QVector<std::string> *b;
     bool Serviced = false;
     QString statement = "SELECT Service FROM Master WHERE BikeId = ";
     statement.append(QString::fromStdString( std::to_string(BikeId)));
@@ -34,18 +31,17 @@ void checkOutWidget::toggleCheckOut() {
         if (isCheckedOut) {
             isCheckedOut = false;
             checkOut->setText("Bike is Checked-in");
-            mTimeLine->setToggled(QDateTime::currentDateTime(), isCheckedOut,b, BikeId );
+            mTimeLine->setToggled(QDateTime::currentDateTime(), isCheckedOut, BikeId );
             // Update server
         }
         else {
             isCheckedOut = true;
             checkOut->setText("Bike is Checked-out");
-            mTimeLine->setToggled(QDateTime::currentDateTime(), isCheckedOut,b, BikeId);
+            mTimeLine->setToggled(QDateTime::currentDateTime(), isCheckedOut, BikeId);
             // Update server
         }
     }
     else QMessageBox::warning(this, "Bike in service" ,"Bike is currently being serviced and cannot be checked out at this time");
-    qDebug() << "Check Out Status: " << isCheckedOut;
 }
 
 void checkOutWidget::setData(bool bCheckOut, QSqlQuery *a) {

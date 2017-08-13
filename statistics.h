@@ -9,7 +9,6 @@
 #include <QString>
 #include "analyzer.h"
 
-
 class Statistics : public QWidget
 {
     Q_OBJECT
@@ -42,10 +41,8 @@ private:
     QHBoxLayout *buttonLayoutHorizontal3;
     QTableWidget *mTable;
     QVector<QString> data;
-
     void setTable(QVector<QString>);
     void setTableTwoColumns(QVector<QString>);
-
 };
 
 #endif // STATISTICS_H

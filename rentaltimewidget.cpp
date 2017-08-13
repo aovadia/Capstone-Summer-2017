@@ -20,4 +20,3 @@ void rentalTimeWidget::setData(int val) {
     QString rentalTime(QDateTime::fromTime_t(val).toUTC().toString("hh:mm"));
     rentalTimeUpdateLbl->setText(rentalTime);
 }
-

@@ -183,7 +183,8 @@ void Statistics::setHealthBelow() {
         QMessageBox::warning(this, "Warning", "No bikes on the server match the option");
     } else {
         setTable(value);
-    }}
+    }
+}
 
 void Statistics::setCheckInDist() {
     Analyzer data(query);
@@ -242,7 +243,8 @@ void Statistics::setHealthAboveDist() {
         QMessageBox::warning(this, "Warning", "No bikes on the server match the option");
     } else {
         setTableTwoColumns(value);
-    }}
+    }
+}
 
 void Statistics::setHealthBelowDist() {
     Analyzer data(query);
@@ -253,7 +255,8 @@ void Statistics::setHealthBelowDist() {
         QMessageBox::warning(this, "Warning", "No bikes on the server match the option");
     } else {
         setTableTwoColumns(value);
-    }}
+    }
+}
 
 void Statistics::setTable(QVector<QString> data) {
     mTable->setColumnCount(8);
@@ -302,8 +305,6 @@ void Statistics::setTableTwoColumns(QVector<QString> data) {
         item2->setTextAlignment(Qt::AlignCenter);
         mTable->setItem(counter, pos,  item);
         mTable->setItem(counter, pos+1,  item2);
-        qDebug() <<"Counter, pos, item: " << counter <<"  " << pos <<"    " <<data[a];
-        qDebug() <<"Counter, pos, item: " << counter <<"  " << pos+1 <<"    " <<data[a+1];
         pos+=3;
 
     }
@@ -312,7 +313,6 @@ void Statistics::setTableTwoColumns(QVector<QString> data) {
     mTable->resizeColumnToContents(5);
 }
 
-
 void Statistics::handleDoubleClicked() {
     QTableWidgetItem *test = mTable->item(mTable->currentRow(), mTable->currentColumn());
     if (!test ||!test->text().isEmpty()) {
@@ -320,7 +320,6 @@ void Statistics::handleDoubleClicked() {
         myManage->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         myManage->queryAccess(query);
         myManage->accessBikeWindow(mTable->currentItem()->text().toInt());
-
     }
 }
 

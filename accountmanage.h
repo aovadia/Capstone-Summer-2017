@@ -34,4 +34,3 @@ private:
 };
 
 #endif // ACCOUNTMANAGE_H
-

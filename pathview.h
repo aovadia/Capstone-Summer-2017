@@ -15,8 +15,6 @@ public:
 private:
     QWebEngineView *mWebView;
     QVBoxLayout *mainLayout;
-
-
 };
 
 #endif // PATHVIEW_H

@@ -28,7 +28,6 @@ void bikeWindow::setupBikeWindow() {
     enterBikeID->setText("Enter Bike ID");
     enterBikeID->setAlignment(Qt::AlignCenter);
 
-
     myQVBox->addWidget(enterBikeID);
 
     editBikeID = new QLineEdit();
@@ -46,7 +45,6 @@ void bikeWindow::setupBikeWindow() {
     //When 'Enter' button is pressed, run 'checkBikeID'
     connect(acceptBikeID, &QPushButton::released, this, &bikeWindow::checkBikeID);
     connect(editBikeID, &QLineEdit::returnPressed, this, &bikeWindow::checkBikeID);
-
 }
 
 void bikeWindow::checkBikeID() {
@@ -110,15 +108,11 @@ void bikeWindow::displayBikeInfo(int bid) {
         }
     }
     else QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-    qDebug() <<"checkout: " <<CheckedOut <<"service: " <<Service <<"Distance: " <<Distance <<"Health: " <<Health;
-
-    qDebug() <<"rental id: " <<latestRentalId << "rental time: " <<rentalTime;
 
     for (int a = 0; a < timeline.size(); a++) {
         for (int b = 0; b < timeline[a].size(); b++) {
             if (timeline[a][b] == 'T') timeline[a][b] = ' ';
         }
-        qDebug() <<"timeline: " <<QString::fromUtf8(timeline[a].c_str());
     }
 
     QLabel *id = new QLabel("Bike ID: " +QString::number(bid));
@@ -139,7 +133,6 @@ void bikeWindow::displayBikeInfo(int bid) {
     myBikeHealth->setData(Health);
     myBikeHealth->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     QVBHealth->addWidget(myBikeHealth);
-
 
     QLabel *distanceTravelLbl = new QLabel("Total distance traveled");
     distanceTravelLbl->setFont(QFont("Times", 16, QFont::Bold));
@@ -172,8 +165,6 @@ void bikeWindow::displayBikeInfo(int bid) {
     myCheckInHistory->sendQuery(query);
     myQVBox->addWidget(myCheckInHistory);
 
-   // myQVBox->addSpacerItem(vertSpace);
-
     checkOutWidget *myCheckOut = new checkOutWidget(myCheckInHistory, bikeID);
     myCheckOut->setData(CheckedOut, query);
     myQVBox->addWidget(myCheckOut);
@@ -191,7 +182,6 @@ void bikeWindow::displayBikeInfo(int bid) {
     openMap->setText("Open map");
     connect(openMap, &QPushButton::released, this, &bikeWindow::openMapView);
     QVBHealth->addWidget(openMap);
-
 }
 
 void bikeWindow::openMapView() {
@@ -227,7 +217,6 @@ void bikeWindow::openMapView() {
     } else {
         QMessageBox::warning(this, "Connection error", "try again in a few seconds");
     }
-
 }
 
 void bikeWindow::backToManagePage() {

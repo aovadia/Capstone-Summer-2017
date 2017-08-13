@@ -30,7 +30,6 @@ MainWindow::MainWindow(QWidget *parent) :
            qDebug() << err.text();
     }
      query = new QSqlQuery(db);
-     //query->exec("INSERT INTO Master (BikeId, CheckedOut, Service, Distance, Health) VALUES (2, 0, 0, 0, 10);");
      connect(ui->usernameTxt, &QLineEdit::returnPressed, this, &MainWindow::on_loginButton_released);
      connect(ui->passwordTxt, &QLineEdit::returnPressed, this, &MainWindow::on_loginButton_released);
 }
@@ -52,7 +51,6 @@ void MainWindow::on_loginButton_released()
     checkUser *isUPValid = new checkUser(ui->usernameTxt->text(), &ui->passwordTxt->text());
     isUPValid->queryAccess(query);
     if (isUPValid->isAccountFound()) {
-        qDebug() <<"Success!";
         hide();
         accountManage *myManage = new accountManage();
         myManage->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
