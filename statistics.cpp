@@ -315,8 +315,8 @@ void Statistics::setTableTwoColumns(QVector<QString> data) {
 }
 
 void Statistics::handleDoubleClicked() {
-    QTableWidgetItem *test = mTable->item(mTable->currentRow(), mTable->currentColumn());
-    if (!test ||!test->text().isEmpty()) {
+    QTableWidgetItem *isCellNotEmpty = mTable->item(mTable->currentRow(), mTable->currentColumn());
+    if (isCellNotEmpty) {
         accountManage *myManage = new accountManage();
         myManage->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         myManage->queryAccess(query);
