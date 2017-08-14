@@ -26,6 +26,7 @@ Statistics::Statistics()
     mTable->setRowCount(200);
     mTable->setColumnCount(8);
     mTable->setAlternatingRowColors(true);
+    mTable->setStyleSheet("QHeaderView::section { background-color:silver }");
 
     mainLayout->addWidget(mTable);
 
