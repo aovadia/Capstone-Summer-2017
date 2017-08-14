@@ -60,8 +60,8 @@ int main(int argc, char *argv[])
 QVector<QDateTime> randomTimes() {
     QVector<QDateTime> data;
     for (int a = 0; a <std::rand() % 100 +1; a++) {
-        data.push_back(QDateTime::fromSecsSinceEpoch(std::rand()));
-        data.push_back(QDateTime::fromSecsSinceEpoch(std::rand()));
+        data.push_back(QDateTime::fromSecsSinceEpoch(std::rand() % 1502754759));
+        data.push_back(QDateTime::fromSecsSinceEpoch(std::rand() % 1502754759));
 
     }
     std::sort(data.begin(), data.end());
