@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
      query = new QSqlQuery(db);
      connect(ui->usernameTxt, &QLineEdit::returnPressed, this, &MainWindow::on_loginButton_released);
      connect(ui->passwordTxt, &QLineEdit::returnPressed, this, &MainWindow::on_loginButton_released);
+     this->setWindowTitle("Capstone Bikes Management Software");
 }
 
 MainWindow::~MainWindow()
