@@ -224,6 +224,7 @@ void bikeWindow::openMapView() {
     QString timeLatest;
     QString statement = "SELECT Rented FROM Rentals WHERE BikeId = ";
     statement.append(QString::fromStdString(std::to_string(bikeID)));
+    statement.append(" ORDER BY Rented DESC");
     if (query->exec(statement)) {
         query->next();
         timeLatest = query->value(0).toString();
