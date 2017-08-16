@@ -87,7 +87,7 @@ void bikeWindow::displayBikeInfo(int bid) {
         Health = query->value(4).toInt();
     }
     else QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-    bool firstTimeDone;
+    bool firstTimeDone = false;
     statement = "SELECT * FROM Rentals WHERE BikeId = ";
     statement.append(val);
     statement.append(" ORDER BY RentalId DESC");
@@ -185,8 +185,26 @@ void bikeWindow::displayBikeInfo(int bid) {
 }
 
 void bikeWindow::openMapView() {
-    QString statement = "SELECT * FROM Locations WHERE BikeId = ";
+    QString timeLatest;
+    QString statement = "SELECT Rented FROM Rentals WHERE BikeId = ";
     statement.append(QString::fromStdString(std::to_string(bikeID)));
+    if (query->exec(statement)) {
+        query->next();
+        timeLatest = query->value(0).toString();
+        timeLatest[10] = ' ';
+    }
+    else QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+    qDebug() << "Latest Check Out: " << timeLatest;
+    if (timeLatest[0] == ' ') {
+        QMessageBox::warning(this, "No coordinates", "Bike has not been checked out.");
+        return;
+    }
+    statement = "SELECT * FROM Locations WHERE BikeId = ";
+    statement.append(QString::fromStdString(std::to_string(bikeID)));
+    statement.append(" AND Timestamp > '");
+    statement.append(timeLatest);
+    statement.append("'");
+    qDebug() << "Map Statement: " << statement;
     QString coordinateData;
     int pos = 0;
     if (query->exec(statement)) {
@@ -211,10 +229,12 @@ void bikeWindow::openMapView() {
             QMessageBox::information(this, "Success", "Coordinate data copied to clipboard!\nPlease unselect open in a new window");
             PathView *mPathView = new PathView();
             mPathView->show();
-        } else {
+        }
+        else {
             QMessageBox::warning(this, "Choose a different bike", "No coordinate data on server");
         }
-    } else {
+    }
+    else {
         QMessageBox::warning(this, "Connection error", "try again in a few seconds");
     }
 }
