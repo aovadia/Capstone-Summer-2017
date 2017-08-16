@@ -6,9 +6,11 @@
 #include <QVector>
 //#include <QVariant>
 
+//Analyzer class used to provide analysis to the Bike Statistics user interface.
 class Analyzer
 {
 public:
+    //functions (to be described in the definition file)
     Analyzer(QSqlQuery *a);
     QVector<QString> TotalBikesCheckedIn();
     QVector<QString> TotalBikesCheckedOut();
@@ -24,6 +26,7 @@ public:
     QVector<QString> DistanceBikesBelow5();
 
 private:
+    //preset formatted strings for perfomring queries
     QSqlQuery *query;
     QString select1 = "SELECT BikeId" ;
     QString select2 = "SELECT BikeId, Distance ";
