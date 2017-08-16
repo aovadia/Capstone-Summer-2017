@@ -103,10 +103,12 @@ void checkInHistory::updateList(int BikeId) {
     QVector<std::string> timeline;
     QString val = QString::fromStdString(std::to_string(BikeId));
     bool firstTimeDone;
+    //Creation of query
     QString statement = "SELECT * FROM Rentals WHERE BikeId = ";
     statement.append(val);
     statement.append(" ORDER BY RentalId DESC");
     bool receivedRental;
+    //Execution of query
     if (query->exec(statement)) {
         receivedRental = true;
         while (query->next()) {
@@ -120,7 +122,7 @@ void checkInHistory::updateList(int BikeId) {
         }
     }
     else QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-
+    //Removal of 'T' misformatting given by the MySQL DATETIME fotmat, for UI display purposes
     for (int a = 0; a < timeline.size(); a++) {
         for (int b = 0; b < timeline[a].size(); b++) {
             if (timeline[a][b] == 'T') timeline[a][b] = ' ';

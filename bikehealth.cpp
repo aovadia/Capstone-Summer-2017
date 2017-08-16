@@ -45,16 +45,17 @@ void bikeHealth::changeHealth() {
 
 /*
  * Function to set the bike health from a specified value.
- * Display it in the UI and update the server
+ * Display it in the UI and update the server to reflect new health of bike
  */
 void bikeHealth::setData(int val) {
     healthBar->setValue(val);
     healthSlider->setValue(val);
-    //update server
+    //Creation of query
     QString statement = "UPDATE Master SET Health = ";
     statement.append(QString::fromStdString(std::to_string(val)));
     statement.append(" WHERE BikeId = ");
     statement.append(QString::fromStdString(std::to_string(BikeId)));
+    //Execution of query
     if (!query->exec(statement))  {
         QMessageBox::warning(this, "Connection error", "try again in a few seconds");
     }

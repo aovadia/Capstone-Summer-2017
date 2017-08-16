@@ -49,6 +49,7 @@ void myTimer::updateTimer() {
         statement.append("FROM Rentals WHERE BikeId = ");
         statement.append(QString::fromStdString(std::to_string(BikeId)));
         statement.append(" ORDER BY RentalId DESC");
+        //This second gets the latest time, whther the bike is checked in or returned
         if (query->exec(statement)) {
             query->next();
             prevTime = query->value(0).toDateTime();

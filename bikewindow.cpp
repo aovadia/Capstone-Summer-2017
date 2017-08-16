@@ -59,15 +59,18 @@ void bikeWindow::setupBikeWindow() {
 
 /*
  * Function to check user input against valid bikeIds.
+ * Function queries Master table to find out if the bike exists in the database
  * If valid input, open up bikeWindow page
  */
 void bikeWindow::checkBikeID() {
     qDebug() <<"You pressed the checkBikeID button";
     bool isValidInput;
     bikeID = editBikeID->text().toUInt(&isValidInput, 10); //Limit entry to 10 characters and be sure it is an int
+    //Creation of query
     std::string statement = "SELECT BikeId FROM Master WHERE BikeId = ";
     std::string val = std::to_string(bikeID);
     statement.append(val);
+    //Execution of query
     if (query->exec(QString::fromUtf8(statement.c_str()))) {
         if (query->next()) displayBikeInfo(bikeID); //Display the bikeWindow for this valid bike
         else QMessageBox::critical(this, "Error", "Not a valid bike.\nPlease try again.");
@@ -79,7 +82,7 @@ void bikeWindow::checkBikeID() {
  * Function to set the widget layout of all the data regarding the bike.
  * The 'bikeHealth', 'bikeServiced', 'checkinHistory', 'checkOutWidget', 'myTimer', 'rentalTimeWidget, and 'pathView' widget
  * are all instantiated here.
- * Connect to the server to retrieve all initial data fields regarding the bike
+ * Connects to and query the server to retrieve all data fields regarding the bike, and formats them for display in the above widgets
  */
 void bikeWindow::displayBikeInfo(int bid) {
     bikeID = bid;
@@ -93,10 +96,12 @@ void bikeWindow::displayBikeInfo(int bid) {
     double Distance;
     int Health, rentalTime;
     QVector<std::string> timeline;
+    //Creation of query on master table
     std::string statement = "SELECT * FROM Master WHERE BikeId = ";
     std::string val = std::to_string(bid);
     statement.append(val);
     bool receivedMaster;
+    //Execution of query
     if (query->exec(QString::fromStdString(statement))) {
         receivedMaster = true;
         query->next();
@@ -105,8 +110,10 @@ void bikeWindow::displayBikeInfo(int bid) {
         Distance = query->value(3).toDouble();
         Health = query->value(4).toInt();
     }
+    //Connection error message
     else QMessageBox::warning(this, "Connection error", "try again in a few seconds");
     bool firstTimeDone = false;
+    //Creation of query on rental table
     statement = "SELECT * FROM Rentals WHERE BikeId = ";
     statement.append(val);
     statement.append(" ORDER BY RentalId DESC");
@@ -115,19 +122,20 @@ void bikeWindow::displayBikeInfo(int bid) {
     if (query->exec(QString::fromUtf8(statement.c_str()))) {
         receivedRental = true;
         while (query->next()) {
+            //retreival of the current rental credentials
             if (!firstTimeDone) {
                 latestRentalId = query->value(0).toInt();
                 firstTimeDone = true;
                 rentalTime = query->value(4).toInt();
             }
             if (query->value(3).toString() != NULL) {
-                timeline.push_back(query->value(3).toString().toStdString().append("I")); //append I
+                timeline.push_back(query->value(3).toString().toStdString().append("I")); //append I (other function parses this as checked in)
             }
-            timeline.push_back(query->value(2).toString().toStdString());
+            timeline.push_back(query->value(2).toString().toStdString()); //checked out
         }
     }
     else QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-
+    //Formatting of the checked in/out table to removee 'T' character given by MySQL DATETIME format
     for (int a = 0; a < timeline.size(); a++) {
         for (int b = 0; b < timeline[a].size(); b++) {
             if (timeline[a][b] == 'T') timeline[a][b] = ' ';
