@@ -4,6 +4,10 @@
 #include <QMessageBox>
 #include "accountmanage.h"
 
+/*  Class used to setup the layout for creating a new bike,
+ *  searching for a new bike, and displaying bike statistics.
+ *  Setup account management page layout
+ */
 accountManage::accountManage(QWidget *parent) : QWidget(parent)
 {
     isBikeWindowActive = false;
@@ -11,7 +15,7 @@ accountManage::accountManage(QWidget *parent) : QWidget(parent)
     isStatisticsActice = false;
 
     myQVBox = new QVBoxLayout();
-    this->resize(800,500);
+    this->resize(800,500); //set size of window
     setWindowTitle("Account Management");
 
     QHBoxLayout *myQHBox = new QHBoxLayout();
@@ -42,11 +46,17 @@ accountManage::accountManage(QWidget *parent) : QWidget(parent)
 
     setLayout(myQHBox4);
 
+    // Connect button widgets to a handler function
     connect(newBike, &QPushButton::released,this, &accountManage::addNewBike);
     connect(searchBike, &QPushButton::released, this, &accountManage::searchForBike);
     connect(statBike, &QPushButton::released, this, &accountManage::displayStatistics);
 }
 
+/*
+ * Function to handle the button to create a new bike.
+ * Initialize the bikeId, checkOut, Service, Distance, Health of new bike to default values.
+ * Enter new bike data into the server and open bikeWindow view for newly created bike
+ */
 void accountManage::addNewBike() {
 
     // Create the elements neccessary for a new bike
@@ -61,9 +71,10 @@ void accountManage::addNewBike() {
         statement.append(", 0, 0, 0, 10)");
         if (query->exec(QString::fromUtf8(statement.c_str()))) {
             QMessageBox::information(this, "Success", "New Bike successfully created!");
+            // Prevent creating multiple views on the same window
             myQHBox4->removeItem(myQVBox);
             removeActiveWindows();
-            myBikeWindow2 = new bikeWindow();
+            myBikeWindow2 = new bikeWindow(); // Create new bikeWindow
             isAddBikeActive = true;
             myBikeWindow2->queryAccess(query);
             myBikeWindow2->displayBikeInfo(total);
@@ -79,35 +90,49 @@ void accountManage::addNewBike() {
    }
 }
 
+/*
+ * Function to handle searching for a new bike.
+ * Verify the bike exists on the server, and open a bikeWindow view
+ */
 void accountManage::searchForBike() {
-    // Search for a bike in database and show all associated data about bike
-   // hide(); // hide current view
-    //myBikeWindow->show();
+    // Prevent creating multiple views on the same window
     myQHBox4->removeItem(myQVBox);
     removeActiveWindows();
     isBikeWindowActive = true;
-    myBikeWindow = new bikeWindow();
+    myBikeWindow = new bikeWindow(); // Create new bikeWindow view
     resize(800,500);
     myBikeWindow->queryAccess(query);
     myQHBox4->addWidget(myBikeWindow);
     myQHBox4->addLayout(myQVBox);
 }
 
+/*
+ * Function to display bike statistics in a new window
+ */
 void accountManage::displayStatistics() {
+    // Prevent creating multiple views on the same window
     myQHBox4->removeItem(myQVBox);
     removeActiveWindows();
     this->resize(1550,900);
-    mStat = new Statistics();
+    mStat = new Statistics(); // Create new Statistics window
     isStatisticsActice = true;
     mStat->sendAccess(query);
     myQHBox4->addWidget(mStat);
     myQHBox4->addLayout(myQVBox);
 }
 
+/*
+ * Give 'accountManage' access to QSqlQuery object.
+ * Allow class to execute Sql statements to our server
+ */
 void accountManage::queryAccess(QSqlQuery *a) {
     query = a;
 }
 
+/*
+ * Function to remove current active windows from the current view.
+ * Used to prevent multiple instances from appearing in the same window.
+ */
 void accountManage::removeActiveWindows() {
     if (isAddBikeActive) {
         myQHBox4->removeWidget(myBikeWindow2);
@@ -126,10 +151,15 @@ void accountManage::removeActiveWindows() {
     }
 }
 
+/*
+ * Function designed to allow the bike statistics page to launch a bikeWindow widget,
+ * give the proper bikeId
+ */
 void accountManage::accessBikeWindow(int bid) {
+    // Prevent creating multiple views on the same window
     myQHBox4->removeItem(myQVBox);
     removeActiveWindows();
-    myBikeWindow2 = new bikeWindow();
+    myBikeWindow2 = new bikeWindow(); // Create new bikeWindow
     isAddBikeActive = true;
     myBikeWindow2->queryAccess(query);
     myBikeWindow2->displayBikeInfo(bid);

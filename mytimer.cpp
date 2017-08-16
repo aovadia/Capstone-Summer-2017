@@ -2,6 +2,11 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QVariant>
+
+/*
+ * Class used to diplay timeElapsed timer from when the bike was lasted checked-out.
+ * Setup myTimer widget layout
+ */
 myTimer::myTimer(QSqlQuery *query1,int BikeId1)
 {
     query = query1;
@@ -12,6 +17,8 @@ myTimer::myTimer(QSqlQuery *query1,int BikeId1)
     myQVBox = new QVBoxLayout();
 
     QTimer *time = new QTimer();
+
+    // Connect button widgets to a handler function
     connect(time, &QTimer::timeout, this, &myTimer::updateTimer);
     time->start(1000);
 
@@ -22,6 +29,10 @@ myTimer::myTimer(QSqlQuery *query1,int BikeId1)
     setLayout(myQVBox);
 }
 
+/*
+ * Function to handle event when timer is updated (every second).
+ * Only update view if bike is checked-out.
+ */
 void myTimer::updateTimer() {
     bool CheckedOut;
     QDateTime prevTime;
@@ -29,7 +40,7 @@ void myTimer::updateTimer() {
     const int SECSTODAYS = 86400;
     QString statement = "SELECT CheckedOut FROM Master WHERE BikeId = ";
     statement.append(QString::fromStdString(std::to_string(BikeId)));
-    if (query->exec(statement)) {
+    if (query->exec(statement)) { /* Get checkout data from server */
         query->next();
         CheckedOut = query->value(0).toBool();
         statement = "SELECT ";

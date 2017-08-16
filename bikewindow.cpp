@@ -14,11 +14,18 @@
 #include <QClipboard>
 #include <QApplication>
 
+/*
+ * Class used to setup the layout of all the data from a single bike.
+ * Call function 'setupBikeWindow' to setup the layout of bikeWindow
+ */
 bikeWindow::bikeWindow(QWidget *parent) : QWidget(parent)
 {
     setupBikeWindow();
 }
 
+/*
+ * Setup the widget layout of bikeWindow
+ */
 void bikeWindow::setupBikeWindow() {
     myQHBox = new QHBoxLayout(this);
     myQVBox = new QVBoxLayout();
@@ -30,7 +37,7 @@ void bikeWindow::setupBikeWindow() {
 
     myQVBox->addWidget(enterBikeID);
 
-    editBikeID = new QLineEdit();
+    editBikeID = new QLineEdit();  // Line edit to enter bikeId
     editBikeID->setAlignment(Qt::AlignCenter);
 
     myQVBox->addWidget(editBikeID);
@@ -42,30 +49,42 @@ void bikeWindow::setupBikeWindow() {
 
     this->setLayout(myQHBox);
 
-    //When 'Enter' button is pressed, run 'checkBikeID'
+    // When 'Enter' button is pressed, run 'checkBikeID'
+    // Connect button widgets to a handler function
     connect(acceptBikeID, &QPushButton::released, this, &bikeWindow::checkBikeID);
+
+    // Allow pressing 'enter' to press 'checkBikeID' button
     connect(editBikeID, &QLineEdit::returnPressed, this, &bikeWindow::checkBikeID);
 }
 
+/*
+ * Function to check user input against valid bikeIds.
+ * If valid input, open up bikeWindow page
+ */
 void bikeWindow::checkBikeID() {
-    qDebug() <<"You pressed the accept button!";
+    qDebug() <<"You pressed the checkBikeID button";
     bool isValidInput;
-    bikeID = editBikeID->text().toUInt(&isValidInput, 10);
+    bikeID = editBikeID->text().toUInt(&isValidInput, 10); //Limit entry to 10 characters and be sure it is an int
     std::string statement = "SELECT BikeId FROM Master WHERE BikeId = ";
     std::string val = std::to_string(bikeID);
     statement.append(val);
     if (query->exec(QString::fromUtf8(statement.c_str()))) {
-        if (query->next()) displayBikeInfo(bikeID);
+        if (query->next()) displayBikeInfo(bikeID); //Display the bikeWindow for this valid bike
         else QMessageBox::critical(this, "Error", "Not a valid bike.\nPlease try again.");
     }
     else QMessageBox::warning(this, "Connection error", "try again in a few seconds");
 }
 
+/*
+ * Function to set the widget layout of all the data regarding the bike.
+ * The 'bikeHealth', 'bikeServiced', 'checkinHistory', 'checkOutWidget', 'myTimer', 'rentalTimeWidget, and 'pathView' widget
+ * are all instantiated here.
+ * Connect to the server to retrieve all initial data fields regarding the bike
+ */
 void bikeWindow::displayBikeInfo(int bid) {
     bikeID = bid;
     this->resize(1500,1000);
     // Delete objects from window
-    //delete editBikeID;
     editBikeID->hide();
     delete acceptBikeID;
     delete enterBikeID;
@@ -115,6 +134,7 @@ void bikeWindow::displayBikeInfo(int bid) {
         }
     }
 
+    // Setup bikeId label and add to layout
     QLabel *id = new QLabel("Bike ID: " +QString::number(bid));
     id->setFont(QFont("Times", 16, QFont::Bold));
     id->setAlignment(Qt::AlignHCenter);
@@ -124,20 +144,24 @@ void bikeWindow::displayBikeInfo(int bid) {
     QVBoxLayout *QVBHealth = new QVBoxLayout();
     myQHBox->addLayout(QVBHealth);
 
+    // Setup time of last update and add to layout
     QLabel *timeOfLastUpdate = new QLabel("Last Update: "+ setTimeOfUpdate());
     timeOfLastUpdate->setAlignment(Qt::AlignTop);
     myQVBox->addWidget(timeOfLastUpdate);
 
+    // Setup bikeHealth widget and add to layout
     bikeHealth *myBikeHealth = new bikeHealth(bikeID);
     myBikeHealth->sendQuery(query);
     myBikeHealth->setData(Health);
     myBikeHealth->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     QVBHealth->addWidget(myBikeHealth);
 
+    // Setup distance traveled label and add to layout
     QLabel *distanceTravelLbl = new QLabel("Total distance traveled");
     distanceTravelLbl->setFont(QFont("Times", 16, QFont::Bold));
     QVBHealth->addWidget(distanceTravelLbl);
 
+    // Setup distance traveled data label and add to layout
     QLabel *distanceTravelData = new QLabel();
     int kilometers = Distance / 1;
     double meters = ((Distance - kilometers) * 1000);
@@ -156,34 +180,46 @@ void bikeWindow::displayBikeInfo(int bid) {
     distanceTravelData->setText(text);
     QVBHealth->addWidget(distanceTravelData);
 
+    // Setup rental period widget and add to layout
     rentalTimeWidget *myRentalTime = new rentalTimeWidget();
     myRentalTime->setData(rentalTime);
     QVBHealth->addWidget(myRentalTime);
 
+    // Setup checkInHistory widget and add to layout
     checkInHistory *myCheckInHistory = new checkInHistory(bikeID, myRentalTime);
     myCheckInHistory->setData(timeline);
     myCheckInHistory->sendQuery(query);
     myQVBox->addWidget(myCheckInHistory);
 
+    // Setup checkOutWidget widget and add to layout
     checkOutWidget *myCheckOut = new checkOutWidget(myCheckInHistory, bikeID);
     myCheckOut->setData(CheckedOut, query);
     myQVBox->addWidget(myCheckOut);
 
+    // Setup bikeServiced widget and add to layout
     bikeServiced *myBikeSeviced = new bikeServiced(myBikeHealth);
     myBikeSeviced->accessSql(query, bid);
     myBikeSeviced->setData(Service);
     myQVBox->addWidget(myBikeSeviced);
 
+    // Setup myTimer widget (time elapsed) and add to layout
     myTimer *myTimerLayout = new myTimer(query, bid);
     myTimerLayout->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     QVBHealth->addWidget(myTimerLayout);
 
+    // Setup openMap (Map view) button and add to layout
     QPushButton *openMap = new QPushButton();
     openMap->setText("Open map");
     connect(openMap, &QPushButton::released, this, &bikeWindow::openMapView);
     QVBHealth->addWidget(openMap);
 }
 
+
+/*
+ * Function to handle the button press of 'openMap'
+ * Creates a new window and instantiates 'pathView' widget to display bike path.
+ * Copy coordinate data from server to client's clipboard
+ */
 void bikeWindow::openMapView() {
     QString timeLatest;
     QString statement = "SELECT Rented FROM Rentals WHERE BikeId = ";
@@ -239,17 +275,17 @@ void bikeWindow::openMapView() {
     }
 }
 
-void bikeWindow::backToManagePage() {
-    hide();
-    accountManage *mManage = new accountManage();
-    mManage->show();
-}
-
+/*
+ * Function that returns the current datetime
+ */
 QString bikeWindow::setTimeOfUpdate() {
-    // Search database for time of last update
     return QString(QTime::currentTime().toString("hh:mm:ss")); //test
 }
 
+/*
+ * Give 'bikeWindow' access to QSqlQuery object.
+ * Allow class to execute Sql statements to our server
+ */
 void bikeWindow::queryAccess(QSqlQuery *a) {
     query = a;
 }

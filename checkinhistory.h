@@ -15,13 +15,11 @@ class checkInHistory : public QWidget
     Q_OBJECT
 public:
     explicit checkInHistory(const int id, rentalTimeWidget *a);
-    void testEnterCheckinData();
     void setData(QVector<std::string>);
     bool setToggled(QDateTime, bool, int);
     void sendQuery(QSqlQuery *);
 
 private slots:
-    void copyCheckInData();
     void saveRentalTime();
 
 private:

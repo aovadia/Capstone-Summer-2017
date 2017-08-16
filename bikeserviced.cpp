@@ -3,6 +3,10 @@
 #include <QMessageBox>
 #include <QDebug>
 
+/*
+ * Class used to display and toggle if the bike is in-service or is active.
+ * Setup bikeServiced widget layout given access to 'bikeHealth' widget
+ */
 bikeServiced::bikeServiced(bikeHealth *myBikeHealth)
 {
     this->myBikeHealth = myBikeHealth;
@@ -15,10 +19,17 @@ bikeServiced::bikeServiced(bikeHealth *myBikeHealth)
     QPushButton *toggleServiced = new QPushButton("Toggle serviced status");
     myQVBox->addWidget(toggleServiced);
 
+    // Connect button widgets to a handler function
     connect(toggleServiced, &QPushButton::released, this, &bikeServiced::toggleInService);
     setLayout(myQVBox);
 }
 
+/*
+ * Function to handle when the 'bikeServiced' button is pressed.
+ * Check server to see if bike is in-service or is active.
+ * Then flip the value and update the server.
+ * If 'bikeService' is updated to be active, set bikeHealth to 100%
+ */
 void bikeServiced::toggleInService() {
     bool isCheckedOut = false;
     QString statement = "SELECT CheckedOut FROM Master Where BikeId = ";
@@ -51,6 +62,10 @@ void bikeServiced::toggleInService() {
     else QMessageBox::warning(this, "Bike Checked Out", "Bike must be returned to the shop in order to be serviced.");
 }
 
+/*
+ * Function to set the initial value of 'bikeService' given a specified boolean
+ * Update the server with 'serviced' value
+ */
 void bikeServiced::setData(bool bServiced) {
     inService = bServiced;
     if (inService) {
@@ -68,6 +83,11 @@ void bikeServiced::setData(bool bServiced) {
     }
 }
 
+/*
+ * Give 'bikeServiced' access to QSqlQuery object.
+ * Allow class to execute Sql statements to our server.
+ * Set bikeId
+ */
 void bikeServiced::accessSql(QSqlQuery *a, int id) {
     query = a;
     bikeID = id;

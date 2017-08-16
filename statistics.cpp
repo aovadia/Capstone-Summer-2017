@@ -6,6 +6,23 @@
 #include "bikewindow.h"
 #include "accountmanage.h"
 
+/*
+ * Class used to display following bike statistics:
+ *      1) All bikes checked-in
+ *      2) All bikes checked-out
+ *      3) All bikes with health above or equal to 5
+ *      4) All bikes with health below 5
+ *      5) All bikes active
+ *      6) All bikes in service
+ *      7) All bikes checked-in with distances
+ *      8) all bikes checked-out with distances
+ *      9) all bikes with health above or equal to 5 with distances
+ *      10) all bikes with health below 5 with distances
+ *      11) all bikes active with distances
+ *      12) all bikes in service with distances
+ *
+ * Setup up Statistics widget layout
+ */
 Statistics::Statistics()
 {
     for (int a = 0; a <= 205; a++) {
@@ -32,12 +49,12 @@ Statistics::Statistics()
 
     setLayout(mainLayout);
 
+    // Create all of the neccessary buttons
     QPushButton *bCheckedIn = new QPushButton();
     bCheckedIn->setText("Bikes checked in");
 
     QPushButton *bCheckedOut = new QPushButton();
     bCheckedOut->setText("Bikes checked out");
-
 
     QPushButton *bActive = new QPushButton();
     bActive->setText("Bikes active");
@@ -69,6 +86,7 @@ Statistics::Statistics()
     QPushButton *bHealthBelowDist = new QPushButton();
     bHealthBelowDist->setText("Distance + Bike health below 5");
 
+    // Add all the buttons to appropriate layout
     buttonLayoutHorizontal->addWidget(bCheckedIn);
     buttonLayoutHorizontal->addWidget(bCheckedOut);
     buttonLayoutHorizontal->addWidget(bHealthAbove);
@@ -88,7 +106,7 @@ Statistics::Statistics()
     mainLayout->addLayout(buttonLayoutHorizontal2);
     mainLayout->addLayout(buttonLayoutHorizontal3);
 
-
+    // Connect button widgets to a handler function
     connect(bCheckedIn, &QPushButton::released, this, &Statistics::setCheckIn);
     connect(bCheckedOut, &QPushButton::released, this, &Statistics::setCheckOut);
 
@@ -114,6 +132,9 @@ Statistics::Statistics()
 }
 
 
+/*
+ *  Function used to retrive checkInData from 'Analyzer' class and set a vector with that data
+ */
 void Statistics::setCheckIn() {
     Analyzer data(query);
     QVector<QString> value = data.TotalBikesCheckedIn();
@@ -126,6 +147,9 @@ void Statistics::setCheckIn() {
     }
 }
 
+/*
+ *  Function used to retrive checkOutData from 'Analyzer' class and set a vector with that data
+ */
 void Statistics::setCheckOut() {
     Analyzer data(query);
     QVector<QString> value = data.TotalBikesCheckedOut();
@@ -138,6 +162,9 @@ void Statistics::setCheckOut() {
     }
 }
 
+/*
+ *  Function used to retrive bike active data from 'Analyzer' class and set a vector with that data
+ */
 void Statistics::setActive() {
     Analyzer data(query);
     QVector<QString> value = data.TotalBikesActive();
@@ -150,6 +177,9 @@ void Statistics::setActive() {
     }
 }
 
+/*
+ *  Function used to retrive bike in service data from 'Analyzer' class and set a vector with that data
+ */
 void Statistics::setInService() {
     Analyzer data(query);
     QVector<QString> value = data.TotalBikesInService();
@@ -163,6 +193,9 @@ void Statistics::setInService() {
 
 }
 
+/*
+ *  Function used to retrive bike health above or equal to 5 data from 'Analyzer' class and set a vector with that data
+ */
 void Statistics::setHealthAbove() {
     Analyzer data(query);
     QVector<QString> value = data.TotalBikesAbove5();
@@ -175,6 +208,9 @@ void Statistics::setHealthAbove() {
     }
 }
 
+/*
+ *  Function used to retrive bike health below 5 from 'Analyzer' class and set a vector with that data
+ */
 void Statistics::setHealthBelow() {
     Analyzer data(query);
     QVector<QString> value = data.TotalBikesBelow5();
@@ -187,6 +223,9 @@ void Statistics::setHealthBelow() {
     }
 }
 
+/*
+ *  Function used to retrive checkInData + distance from 'Analyzer' class and set a vector with that data
+ */
 void Statistics::setCheckInDist() {
     Analyzer data(query);
     QVector<QString> value = data.DistanceBikesCheckedIn();
@@ -199,6 +238,9 @@ void Statistics::setCheckInDist() {
     }
 }
 
+/*
+ *  Function used to retrive checkOutData + distance from 'Analyzer' class and set a vector with that data
+ */
 void Statistics::setCheckOutDist() {
     Analyzer data(query);
     QVector<QString> value = data.DistanceBikesCheckedOut();
@@ -211,6 +253,9 @@ void Statistics::setCheckOutDist() {
     }
 }
 
+/*
+ *  Function used to retrive active bikes + distance from 'Analyzer' class and set a vector with that data
+ */
 void Statistics::setActiveDist() {
     Analyzer data(query);
     QVector<QString> value = data.DistanceBikesActive();
@@ -223,6 +268,9 @@ void Statistics::setActiveDist() {
     }
 }
 
+/*
+ *  Function used to retrive in service bikes + distance from 'Analyzer' class and set a vector with that data
+ */
 void Statistics::setInServiceDist() {
     Analyzer data(query);
     QVector<QString> value = data.DistanceBikesInService();
@@ -235,6 +283,9 @@ void Statistics::setInServiceDist() {
     }
 }
 
+/*
+ *  Function used to retrive bikes with health above or equal to 5 + distance from 'Analyzer' class and set a vector with that data
+ */
 void Statistics::setHealthAboveDist() {
     Analyzer data(query);
     QVector<QString> value = data.DistanceBikesAbove5();
@@ -247,6 +298,9 @@ void Statistics::setHealthAboveDist() {
     }
 }
 
+/*
+ *  Function used to retrive bikes with health below 5 + distance from 'Analyzer' class and set a vector with that data
+ */
 void Statistics::setHealthBelowDist() {
     Analyzer data(query);
     QVector<QString> value = data.DistanceBikesBelow5();
@@ -259,9 +313,11 @@ void Statistics::setHealthBelowDist() {
     }
 }
 
+/*
+ * Function used to set the table view based on a data passed that do not have distances
+ */
 void Statistics::setTable(QVector<QString> data) {
     mTable->setColumnCount(8);
-    //mTable->horizontalHeader()->setDefaultSectionSize(175);
     mTable->clear(); // Remove existing entries
     int columnDivide = (data.size() / 8)+1;
     int counter = 0, pos = 0;
@@ -278,6 +334,9 @@ void Statistics::setTable(QVector<QString> data) {
     }
 }
 
+/*
+ * Function used to set the table view based on a data passed that do have distances
+ */
 void Statistics::setTableTwoColumns(QVector<QString> data) {
     mTable->clear(); // Remove existing entries
     mTable->setColumnCount(8);
@@ -314,6 +373,10 @@ void Statistics::setTableTwoColumns(QVector<QString> data) {
     mTable->resizeColumnToContents(5);
 }
 
+/*
+ * Function to handle when a cell is double pressed.
+ * Open up a bikeWindow widget based on the cell pressed for the bikeId
+ */
 void Statistics::handleDoubleClicked() {
     QTableWidgetItem *isCellNotEmpty = mTable->item(mTable->currentRow(), mTable->currentColumn());
     if (isCellNotEmpty) {
@@ -324,6 +387,10 @@ void Statistics::handleDoubleClicked() {
     }
 }
 
+/*
+ * Give 'Statistics' access to QSqlQuery object.
+ * Allow class to execute Sql statements to our server
+ */
 void Statistics::sendAccess(QSqlQuery *a) {
     query = a;
     //accoutMWindow = b;

@@ -5,6 +5,10 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+/*
+ * Class used to display all the checkIn and checkOut data of a bike.
+ * Setup checkInHistory widget layout
+ */
 checkInHistory::checkInHistory(const int id, rentalTimeWidget *a)
 {
     mTimeWidget = a;
@@ -22,23 +26,12 @@ checkInHistory::checkInHistory(const int id, rentalTimeWidget *a)
     setLayout(myQVBox);
 }
 
-// Method to copy item to clipboard
-void checkInHistory::copyCheckInData() {
-    QClipboard *copyItem = QApplication::clipboard();
-    copyItem->setText(myList->currentItem()->text());
-}
-
-void checkInHistory::testEnterCheckinData() {
-    myList->addItem("Out: 2/2/17 5:30am");
-    myList->addItem("In: 2/2/17 7:45am");
-    myList->addItem("Out: 2/2/17 5:30am");
-    myList->addItem("In: 2/2/17 7:45am");
-    myList->addItem("Out: 2/2/17 5:30am");
-    myList->addItem("In: 2/2/17 7:45am");
-}
-
+/*
+ * Function to set the initial checkIn and checkOut data of a bike and display it
+ * Retrieve checkIn and checkOut values from the server
+ */
 void checkInHistory::setData(QVector<std::string> data) {
-    myList->clear();
+    myList->clear(); // Remove any existing entries
     std::string Year, Month, Day, Time, Status;
     for (int a = 0; a < data.size(); a++) {
         Year = data[a].substr(0, 4);
@@ -58,6 +51,11 @@ void checkInHistory::setData(QVector<std::string> data) {
     }
 }
 
+
+/*
+ * Function used to handle if the user pressed the button to checkIn or checkOut the bike
+ * Update the server and call the 'updateList' function to update the view with the changed value
+ */
 bool checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, int BikeId) {
     QString rentalIdQuery = "SELECT COUNT(*) FROM Rentals";
     if (!query->exec(rentalIdQuery)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
@@ -80,7 +78,7 @@ bool checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, int BikeId) {
         if(!query->exec(checkIn2)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
     }
     else {
-        setRentalTime();
+        setRentalTime(); // Allow user to choose a rental period when checking out the bike
         mTimeWidget->setData(RentalPlan);
         checkOut.append(QString::fromStdString( std::to_string(BikeId)));
         checkOut.append(", '");
@@ -97,6 +95,10 @@ bool checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, int BikeId) {
     return false;
 }
 
+/*
+ * Function to retrieve the current checkIn and checkOut data from the server and call
+ * 'setData' to update the widget view
+ */
 void checkInHistory::updateList(int BikeId) {
     QVector<std::string> timeline;
     QString val = QString::fromStdString(std::to_string(BikeId));
@@ -127,10 +129,17 @@ void checkInHistory::updateList(int BikeId) {
     }
 }
 
+/*
+ * Give 'checkInHistory' access to QSqlQuery object.
+ * Allow class to execute Sql statements to our server
+ */
 void checkInHistory::sendQuery(QSqlQuery *a) {
     query = a;
 }
 
+/*
+ * Function to open a popup to enter rental period of the bike
+ */
 void checkInHistory::setRentalTime() {
     mDialog = new QDialog();
     QVBoxLayout *rentalLayout = new QVBoxLayout();
@@ -150,10 +159,16 @@ void checkInHistory::setRentalTime() {
 
     QPushButton *accept = new QPushButton("Save");
     rentalLayout->addWidget(accept);
+
+    // Connect button widgets to a handler function
     connect(accept, &QPushButton::released, this, &checkInHistory::saveRentalTime);
     mDialog->exec();
 }
 
+/*
+ * Function to handle when the 'accept' button is pressed.
+ * Update the server with the set rental period
+ */
 void checkInHistory::saveRentalTime() {
     // Update server
     std::string val = mComboBox->currentText().toStdString();

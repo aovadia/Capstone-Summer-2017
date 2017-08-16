@@ -6,6 +6,10 @@
 #include <QVBoxLayout>
 #include <QMessageBox>
 
+/*
+ * Class used to create the initial view of our app upon executing
+ * Setup the initialScreen widget layout
+ */
 initialScreen::initialScreen(QWidget *parent) : QWidget(parent)
 {
 
@@ -17,7 +21,7 @@ initialScreen::initialScreen(QWidget *parent) : QWidget(parent)
     welcomeMessage->setAlignment(Qt::AlignHCenter);
 
     QLabel *version = new QLabel();
-    version->setText("Alpha v1.01");
+    version->setText("Release v1.0");
     version->setAlignment(Qt::AlignLeft);
     QVBoxLayout *myQVBox = new QVBoxLayout(this);
 
@@ -39,18 +43,27 @@ initialScreen::initialScreen(QWidget *parent) : QWidget(parent)
     aboutUs->setText("About us");
     myQVBox->addWidget(aboutUs);
 
+    // Connect button widgets to a handler function
     connect(manage, &QPushButton::released, this, &initialScreen::manageBikes);
     connect(aboutUs, &QPushButton::released, this, &initialScreen::displayAboutUs);
     this->setFixedSize(this->width(), this->height());
 }
 
+/*
+ * Function to handle when the 'manage' button is pressed.
+ * Instantiate 'MainWindow' class to login
+ */
 void initialScreen::manageBikes() {
 
     MainWindow *main = new MainWindow;
-    hide();
+    close(); // Close initialScreen
     main->show();
 }
 
+/*
+ * Function to handle when the 'aboutUs' button is pressed.
+ * Display a popup information with our names
+ */
 void initialScreen::displayAboutUs() const {
     QMessageBox *us = new QMessageBox();
     QString project("Bike rental service created for our capstone class\n\n");

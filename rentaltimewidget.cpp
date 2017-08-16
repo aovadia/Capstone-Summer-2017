@@ -2,6 +2,10 @@
 #include <QPushButton>
 #include <QDateTime>
 
+/*
+ * Class used to display the rental period of a bike.
+ * Setup rentalTimeWidget widget layout
+ */
 rentalTimeWidget::rentalTimeWidget()
 {
     QLabel *rentalTimeLbl = new QLabel();
@@ -15,7 +19,9 @@ rentalTimeWidget::rentalTimeWidget()
     setLayout(myQVBox);
 }
 
-
+/*
+ * Function used to set the rental time label of a given int value
+ */
 void rentalTimeWidget::setData(int val) {
     QString rentalTime(QDateTime::fromTime_t(val).toUTC().toString("hh:mm"));
     rentalTimeUpdateLbl->setText(rentalTime);

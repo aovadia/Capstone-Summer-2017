@@ -59,6 +59,9 @@ QString checkUser::generateHash(QString *data) {
     return userPass->result().toHex();
 }
 
+/* Give 'checkUser' access to QSqlQuery object.
+ * Allow class to execute Sql statements to our server
+ */
 void checkUser::queryAccess(QSqlQuery *a) {
     query = a;
 }

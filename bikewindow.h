@@ -31,7 +31,6 @@ private:
     QHBoxLayout *myQHBox4;
     int bikeID;
     void openMapView();
-    void backToManagePage();
     QString setTimeOfUpdate();
 };
 

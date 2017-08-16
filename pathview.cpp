@@ -1,5 +1,9 @@
 #include "pathview.h"
 
+/*
+ * Class used to open webpage to display bike path.
+ * Setup pathView widget layout
+ */
 PathView::PathView()
 {
     mainLayout = new QVBoxLayout(this);

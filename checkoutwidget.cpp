@@ -3,6 +3,10 @@
 #include <QDateTime>
 #include <QMessageBox>
 
+/*
+ * Class used to allow user to checkIn and checkOut bike.
+ * Setup checkOutWidget widget layout
+ */
 checkOutWidget::checkOutWidget(checkInHistory *history, int id)
 {
     BikeId = id;
@@ -14,10 +18,17 @@ checkOutWidget::checkOutWidget(checkInHistory *history, int id)
 
     QPushButton *toggleCheckoutBtn = new QPushButton("Toggle CheckOut");
     myQVBox->addWidget(toggleCheckoutBtn);
+
+    // Connect button widgets to a handler function
     connect(toggleCheckoutBtn, &QPushButton::released, this, &checkOutWidget::toggleCheckOut);
     setLayout(myQVBox);
 }
 
+/*
+ * Function to handle when the 'toggleCheckoutBtn' button is pressed.
+ * Toggle the checkOut/checkIn value of the bike and display it in the widget.
+ * Also, add the new value to the 'checkInHistory' widget and update the server.
+ */
 void checkOutWidget::toggleCheckOut() {
     bool Serviced = false;
     QString statement = "SELECT Service FROM Master WHERE BikeId = ";
@@ -44,6 +55,9 @@ void checkOutWidget::toggleCheckOut() {
     else QMessageBox::warning(this, "Bike in service" ,"Bike is currently being serviced and cannot be checked out at this time");
 }
 
+/*
+ * Function used to retrieve whether the bike is currently checked-in or checked-out to display it in the UI
+ */
 void checkOutWidget::setData(bool bCheckOut, QSqlQuery *a) {
     isCheckedOut = bCheckOut;
     query = a;

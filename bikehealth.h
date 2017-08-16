@@ -24,7 +24,6 @@ private:
     QVBoxLayout *myQVBox;
     QSlider *healthSlider;
     QProgressBar *healthBar;
-    void setHealth();
     QSqlQuery *query;
 };
 

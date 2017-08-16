@@ -1,5 +1,10 @@
 #include "bikehealth.h"
 #include <QMessageBox>
+
+/*
+ * Class used to diplay and allow user to change bike health.
+ * Setup bikeHealth widget view given bikeId
+ */
 bikeHealth::bikeHealth(int id)
 {
     BikeId = id;
@@ -16,16 +21,16 @@ bikeHealth::bikeHealth(int id)
     myQVBox->addWidget(healthSlider);
     myQVBox->addWidget(healthBar);
     myQVBox->setAlignment(Qt::AlignTop);
-    // Double press checkin data to copy item to clipboard
+
+    // Connect button widgets to a handler function
     connect(healthSlider, &QSlider::sliderReleased, this, &bikeHealth::changeHealth);
     setLayout(myQVBox);
 }
 
-void bikeHealth::setHealth() {
-    // Get health info from server and set it
-    healthBar->setValue(10); //test
-}
-
+/*
+ * Function to handle updating the bike health when slider value is changed.
+ * Set the UI to display the changed health and update the server
+ */
 void bikeHealth::changeHealth() {
     int val = healthSlider->value();
     healthBar->setValue(val);
@@ -38,6 +43,10 @@ void bikeHealth::changeHealth() {
     }
 }
 
+/*
+ * Function to set the bike health from a specified value.
+ * Display it in the UI and update the server
+ */
 void bikeHealth::setData(int val) {
     healthBar->setValue(val);
     healthSlider->setValue(val);
@@ -51,6 +60,10 @@ void bikeHealth::setData(int val) {
     }
 }
 
+/*
+ * Give 'bikeHealth' access to QSqlQuery object.
+ * Allow class to execute Sql statements to our server
+ */
 void bikeHealth::sendQuery(QSqlQuery *a) {
     query = a;
 }
