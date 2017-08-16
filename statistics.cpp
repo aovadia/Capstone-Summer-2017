@@ -379,7 +379,7 @@ void Statistics::setTableTwoColumns(QVector<QString> data) {
  */
 void Statistics::handleDoubleClicked() {
     QTableWidgetItem *isCellNotEmpty = mTable->item(mTable->currentRow(), mTable->currentColumn());
-    if (isCellNotEmpty) {
+    if (isCellNotEmpty && !isCellNotEmpty->text().contains("m")) {
         accountManage *myManage = new accountManage();
         myManage->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         myManage->queryAccess(query);
