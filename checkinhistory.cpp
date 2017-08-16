@@ -61,41 +61,39 @@ void checkInHistory::setData(QVector<std::string> data) {
 bool checkInHistory::setToggled(QDateTime mTime, bool mCheckedOut, int BikeId) {
     QString rentalIdQuery = "SELECT COUNT(*) FROM Rentals";
     if (!query->exec(rentalIdQuery)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-    if (query->first()) {
-        query->next();
-        int RentalId = query->value(0).toInt();
-        QString checkIn = "UPDATE Rentals SET Returned = '";
-        QString checkInEnd = " WHERE RentalID = ";
-        QString checkIn2 = "UPDATE Master SET CheckedOut = 0 WHERE BikeId = ";
-        QString checkOut = "INSERT INTO Rentals (BikeId, Rented, Returned, RentalPlan) VALUES (";
-        QString checkOutEnd = ")";
-        QString checkOut2 = "UPDATE Master SET CheckedOut = 1 WHERE BikeId = ";
-        QString DateTime = mTime.toString("yyyy-MM-dd hh:mm:ss");
-        if (!mCheckedOut) {
-            checkIn.append(DateTime);
-            checkIn.append("'");
-            checkIn.append(checkInEnd);
-            checkIn.append(QString::fromStdString( std::to_string(RentalId)));
-            if (!query->exec(checkIn)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-            checkIn2.append(QString::fromStdString( std::to_string(BikeId)));
-            if(!query->exec(checkIn2)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-        }
-        else {
-            setRentalTime();
-            mTimeWidget->setData(RentalPlan);
-            checkOut.append(QString::fromStdString( std::to_string(BikeId)));
-            checkOut.append(", '");
-            checkOut.append(DateTime);
-            checkOut.append("', ");
-            checkOut.append("NULL, ");
-            checkOut.append(QString::fromStdString( std::to_string(RentalPlan)));
-            checkOut.append(checkOutEnd);
-            if (!query->exec(checkOut)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-            checkOut2.append(QString::fromStdString( std::to_string(BikeId)));
-            if(!query->exec(checkOut2)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
-        }
-        updateList(BikeId);
+    query->next();
+    int RentalId = query->value(0).toInt();
+    QString checkIn = "UPDATE Rentals SET Returned = '";
+    QString checkInEnd = " WHERE RentalID = ";
+    QString checkIn2 = "UPDATE Master SET CheckedOut = 0 WHERE BikeId = ";
+    QString checkOut = "INSERT INTO Rentals (BikeId, Rented, Returned, RentalPlan) VALUES (";
+    QString checkOutEnd = ")";
+    QString checkOut2 = "UPDATE Master SET CheckedOut = 1 WHERE BikeId = ";
+    QString DateTime = mTime.toString("yyyy-MM-dd hh:mm:ss");
+    if (!mCheckedOut) {
+        checkIn.append(DateTime);
+        checkIn.append("'");
+        checkIn.append(checkInEnd);
+        checkIn.append(QString::fromStdString( std::to_string(RentalId)));
+        if (!query->exec(checkIn)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+        checkIn2.append(QString::fromStdString( std::to_string(BikeId)));
+        if(!query->exec(checkIn2)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
     }
+    else {
+        setRentalTime();
+        mTimeWidget->setData(RentalPlan);
+        checkOut.append(QString::fromStdString( std::to_string(BikeId)));
+        checkOut.append(", '");
+        checkOut.append(DateTime);
+        checkOut.append("', ");
+        checkOut.append("NULL, ");
+        checkOut.append(QString::fromStdString( std::to_string(RentalPlan)));
+        checkOut.append(checkOutEnd);
+        if (!query->exec(checkOut)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+        checkOut2.append(QString::fromStdString( std::to_string(BikeId)));
+        if(!query->exec(checkOut2)) QMessageBox::warning(this, "Connection error", "try again in a few seconds");
+    }
+    updateList(BikeId);
     return false;
 }
 
