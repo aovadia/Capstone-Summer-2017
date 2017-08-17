@@ -10,6 +10,10 @@ import pynmea2
 from datetime import datetime
 import mysql.connector
 from mysql.connector import errorcode
+import time
+
+print("Executed!")
+time.sleep(60)
 
 cnx = mysql.connector.connect(user='db_admin', password ='capstone',
                               host='capstone-bikes.cphpxguj45gw.us-east-1.rds.amazonaws.com',
@@ -68,7 +72,7 @@ def getCurrentPosition(msg):
 '''
 def printGPSdata(ending_point, dateTimeStamp, totalDistance):
     datetime = 'Date-Time: %s' %dateTimeStamp
-    print (datetime + " | Lat: %s" %str(ending_point[0]) + " | Lon: %s" %str(ending_point[1]))
+    print (datetime + " | Lat: %s" %str(ending_point[0]) + " | Lon: %s" %str(ending_point[1]*(-1)))
     print("Distance Traveled: " + totalDistance + " kilometers\n")
 
 '''
@@ -84,7 +88,7 @@ def getDistance(starting_point, ending_point):
 '''
 def updateToTable(bikeID, ending_point, datetime, totalDistance):
     currentLat = ending_point[0]
-    currentLon = ending_point[1]
+    currentLon = ending_point[1] *(-1)
     cursor.execute("INSERT INTO Locations (BikeId, Latitude, Longitude, Timestamp) VALUES (%s, %s, %s, %s) ", (bikeID,currentLat,currentLon,datetime,))
     cnx.commit()
     cursor.execute("UPDATE Capstone_Bike_Shop.Master SET Distance = %s WHERE BikeId = 1 ", (totalDistance,))
@@ -105,35 +109,44 @@ def main():
     #TUPLE: (u'0.0',)
     temp = cursor.fetchone()
     temp = str(temp)
+    #rint(temp)
+
+    formattedDist = temp[1:(len(temp) - 2)]
+    #print(formattedDist)
+    formattedDist = float(formattedDist)
+    totalDistance += formattedDist
     
-    # 2nd element is distance
-    #print(tempList)
-    tempList  = temp.split("'")
-    
-    prevDistance = float(tempList[1])
-    totalDistance += prevDistance
+    print(totalDistance)
+    initialDT = datetime.now()
+   
     
     while True:
         rawGps = serialPort.readline()
-        msg = parseGPS(rawGps)
 
+       
         
-        
-        if msg == "error\n":
-            print("Seeking...")
-            pass
-        else:
-            i = datetime.now()
-            dateTimeStamp = i.strftime('%Y-%m-%d %H:%M:%S')
-            if (starting_point == ""):
-                starting_point = getCurrentPosition(msg)
-                ending_point = starting_point
-            elif (starting_point != ""):
-                starting_point = ending_point
-                ending_point = getCurrentPosition(msg)
-                totalDistance += getDistance(starting_point, ending_point)
-            printGPSdata(ending_point, dateTimeStamp, str(totalDistance))
-            updateToTable(bikeID, ending_point, dateTimeStamp, totalDistance)
+        msg = parseGPS(rawGps)
+        nowDT = datetime.now()
+
+        # print ("initial - now = " + str( (int(initialSeconds) - int(nowSeconds) ) ) )
+
+        if ((nowDT - initialDT).seconds % 25 == 0):
+            
+            if msg == "error\n":
+                print("Errors galore...")
+                
+            else:
+                i = datetime.now()
+                dateTimeStamp = i.strftime('%Y-%m-%d %H:%M:%S')
+                if (starting_point == ""):
+                    starting_point = getCurrentPosition(msg)
+                    ending_point = starting_point
+                elif (starting_point != ""):
+                    starting_point = ending_point
+                    ending_point = getCurrentPosition(msg)
+                    totalDistance += getDistance(starting_point, ending_point)
+                printGPSdata(ending_point, dateTimeStamp, str(totalDistance))
+                updateToTable(bikeID, ending_point, dateTimeStamp, totalDistance)
 
 main()
 cursor.close()
